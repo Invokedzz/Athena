@@ -16,7 +16,7 @@ public record BooksDto (
 
         @JsonProperty("release-date")
 
-        LocalDate release_date,
+        LocalDate releaseDate,
 
         Publisher publisher
 
