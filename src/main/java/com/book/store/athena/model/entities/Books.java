@@ -4,13 +4,16 @@ import com.book.store.athena.model.dto.BooksDto;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "stored_books")
 public class Books {
