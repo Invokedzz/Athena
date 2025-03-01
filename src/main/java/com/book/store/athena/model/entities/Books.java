@@ -26,10 +26,13 @@ public class Books {
     @Enumerated(EnumType.STRING)
     Genre genre;
 
+    @Column(name = "release_date")
     LocalDate releaseDate;
 
     @Enumerated(EnumType.STRING)
     Publisher publisher;
+
+    String description;
 
     public Books (BooksDto booksDto) {
 
@@ -42,6 +45,8 @@ public class Books {
         this.releaseDate = booksDto.releaseDate();
 
         this.publisher = booksDto.publisher();
+
+        this.description = booksDto.description();
 
     }
 

@@ -1,0 +1,19 @@
+CREATE TABLE stored_books (
+
+    id INTEGER NOT NULL,
+
+    name CHARACTER VARYING (255) NOT NULL,
+
+    author CHARACTER VARYING (255) NOT NULL,
+
+    genre CHARACTER VARYING (255) NOT NULL,
+
+    release_date DATE NOT NULL,
+
+    publisher CHARACTER VARYING (255) NOT NULL,
+
+    description CHARACTER VARYING (255) NOT NULL,
+
+    PRIMARY KEY (id)
+
+);

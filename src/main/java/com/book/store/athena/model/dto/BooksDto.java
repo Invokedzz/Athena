@@ -18,6 +18,8 @@ public record BooksDto (
 
         LocalDate releaseDate,
 
-        Publisher publisher
+        Publisher publisher,
+
+        String description
 
         ) {}
