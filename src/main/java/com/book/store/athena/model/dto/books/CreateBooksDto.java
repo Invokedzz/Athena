@@ -1,4 +1,4 @@
-package com.book.store.athena.model.dto;
+package com.book.store.athena.model.dto.books;
 
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
