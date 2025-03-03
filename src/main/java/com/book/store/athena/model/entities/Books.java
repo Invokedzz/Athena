@@ -1,7 +1,7 @@
 package com.book.store.athena.model.entities;
 
-import com.book.store.athena.model.dto.CreateBooksDto;
-import com.book.store.athena.model.dto.UpdateBooksDto;
+import com.book.store.athena.model.dto.books.CreateBooksDto;
+import com.book.store.athena.model.dto.books.UpdateBooksDto;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import jakarta.persistence.*;

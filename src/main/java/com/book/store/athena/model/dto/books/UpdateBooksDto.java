@@ -1,4 +1,4 @@
-package com.book.store.athena.model.dto;
+package com.book.store.athena.model.dto.books;
 
 import org.hibernate.validator.constraints.Length;
 

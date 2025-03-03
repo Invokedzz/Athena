@@ -1,18 +1,18 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.FindAllBooksDto;
-import com.book.store.athena.model.dto.CreateBooksDto;
-import com.book.store.athena.model.dto.UpdateBooksDto;
+import com.book.store.athena.model.dto.books.FindAllBooksDto;
+import com.book.store.athena.model.dto.books.CreateBooksDto;
+import com.book.store.athena.model.dto.books.UpdateBooksDto;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -24,23 +24,27 @@ public class BooksController {
 
     @PostMapping
     @Transactional // rollback
-    protected void postBooks (@RequestBody @Valid CreateBooksDto books) {
+    protected ResponseEntity <Void> postBooks (@RequestBody @Valid CreateBooksDto books) {
 
         booksRepository.save(new Books(books));
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
     @GetMapping("/collection")
-    protected List <FindAllBooksDto> findAll () {
+    protected ResponseEntity <List <FindAllBooksDto>> findAll () {
 
-        return booksRepository.findAllByActive(true).stream()
+        var bookList = booksRepository.findAllByActive(true).stream()
                 .map(FindAllBooksDto::new).toList();
+
+        return ResponseEntity.ok(bookList);
 
     }
 
     @Transactional
     @PutMapping("/update/{id}")
-    protected void update (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
+    protected ResponseEntity <Void> update (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -52,13 +56,17 @@ public class BooksController {
 
             booksRepository.save(bookToUpdate);
 
+            return ResponseEntity.ok().build();
+
         }
+
+        return ResponseEntity.notFound().build();
 
     }
 
     @Transactional
     @PutMapping("/reactivate/{id}")
-    protected void reactivate (@PathVariable Long id) {
+    protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -70,13 +78,17 @@ public class BooksController {
 
             booksRepository.save(bookAboutToUpdate);
 
+            return ResponseEntity.noContent().build();
+
         }
+
+        return ResponseEntity.notFound().build();
 
     }
 
     @Transactional
     @DeleteMapping("/delete/{id}")
-    protected void delete (@PathVariable Long id) {
+    protected ResponseEntity <Void> delete (@PathVariable Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -86,7 +98,11 @@ public class BooksController {
 
             bookToDelete.inactive();
 
+            return ResponseEntity.noContent().build();
+
         }
+
+        return ResponseEntity.notFound().build();
 
     }
 
