@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-243.25659.39">
+    <data-source name="athena@localhost" uuid="3c24339d-c6a9-414f-a85f-d95ed72c8da3">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="ATHENA" />
+      <user-name>postgres</user-name>
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>

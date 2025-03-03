@@ -1,10 +1,9 @@
 package com.book.store.athena.model.entities;
 
-import com.book.store.athena.model.dto.BooksDto;
+import com.book.store.athena.model.dto.CreateBooksDto;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class Books {
 
     String description;
 
-    public Books (BooksDto booksDto) {
+    public Books (CreateBooksDto booksDto) {
 
         this.name = booksDto.name();
 

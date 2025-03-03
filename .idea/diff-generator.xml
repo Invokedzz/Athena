@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="sourceModelValue" value="athena:entityManagerFactory" />
+    <option name="targetDbValue" value="3c24339d-c6a9-414f-a85f-d95ed72c8da3" />
+  </component>
+</project>

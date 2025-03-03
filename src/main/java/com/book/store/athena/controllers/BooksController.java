@@ -1,7 +1,7 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.BooksCollectionDto;
-import com.book.store.athena.model.dto.BooksDto;
+import com.book.store.athena.model.dto.FindAllBooksDto;
+import com.book.store.athena.model.dto.CreateBooksDto;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
 import jakarta.transaction.Transactional;
@@ -22,16 +22,23 @@ public class BooksController {
 
     @PostMapping
     @Transactional // rollback
-    private void postBooks (@RequestBody @Valid BooksDto books) {
+    protected void postBooks (@RequestBody @Valid CreateBooksDto books) {
 
         booksRepository.save(new Books(books));
 
     }
 
     @GetMapping("/collection")
-    public List <BooksCollectionDto> findAll () {
+    protected List <FindAllBooksDto> findAll () {
 
-        return booksRepository.findAll().stream().map(BooksCollectionDto::new).collect(Collectors.toList());
+        return booksRepository.findAll().stream().map(FindAllBooksDto::new).collect(Collectors.toList());
+
+    }
+
+    @PutMapping("/update/{id}")
+    protected void updateBooks (@PathVariable Long id, @Valid @RequestBody CreateBooksDto books) {
+
+        //booksRepository.findById(id).ifPresent(booksRepository.save(new Books(books)));
 
     }
 
