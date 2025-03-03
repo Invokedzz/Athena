@@ -1,9 +1,11 @@
 package com.book.store.athena.model.entities;
 
 import com.book.store.athena.model.dto.CreateBooksDto;
+import com.book.store.athena.model.dto.UpdateBooksDto;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +51,28 @@ public class Books {
         this.publisher = booksDto.publisher();
 
         this.description = booksDto.description();
+
+    }
+
+    public void updateBooks (@Valid UpdateBooksDto booksDto) {
+
+        if (booksDto.name() != null) {
+
+            this.name = booksDto.name();
+
+        }
+
+        if (booksDto.author() != null) {
+
+            this.author = booksDto.author();
+
+        }
+
+        if (booksDto.description() != null) {
+
+            this.description = booksDto.description();
+
+        }
 
     }
 
