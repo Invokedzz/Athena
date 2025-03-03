@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
-public record BooksDto (
+public record CreateBooksDto(
 
         @NotBlank
         @Length(min = 4, max = 50)

@@ -4,7 +4,7 @@ import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 
-public record BooksCollectionDto (
+public record FindAllBooksDto(
 
         String name,
 
@@ -18,7 +18,7 @@ public record BooksCollectionDto (
 
         ) {
 
-            public BooksCollectionDto (Books books) {
+            public FindAllBooksDto(Books books) {
 
                 this (books.getName(), books.getAuthor(), books.getGenre(),
                         books.getPublisher(), books.getDescription());
