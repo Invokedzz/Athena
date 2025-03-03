@@ -21,8 +21,6 @@ public class BooksController {
 
     @Autowired
     private BooksRepository booksRepository;
-    @Autowired
-    private ResourcePatternResolver resourcePatternResolver;
 
     @PostMapping
     @Transactional // rollback
@@ -35,7 +33,8 @@ public class BooksController {
     @GetMapping("/collection")
     protected List <FindAllBooksDto> findAll () {
 
-        return booksRepository.findAll().stream().map(FindAllBooksDto::new).collect(Collectors.toList());
+        return booksRepository.findAllByActive(true).stream()
+                .map(FindAllBooksDto::new).toList();
 
     }
 
@@ -52,6 +51,40 @@ public class BooksController {
             bookToUpdate.updateBooks(books);
 
             booksRepository.save(bookToUpdate);
+
+        }
+
+    }
+
+    @Transactional
+    @PutMapping("/reactivate/{id}")
+    protected void reactivate (@PathVariable Long id) {
+
+        var queriedBook = booksRepository.findById(id);
+
+        if (queriedBook.isPresent()) {
+
+            var bookAboutToUpdate = queriedBook.get();
+
+            bookAboutToUpdate.activate();
+
+            booksRepository.save(bookAboutToUpdate);
+
+        }
+
+    }
+
+    @Transactional
+    @DeleteMapping("/delete/{id}")
+    protected void delete (@PathVariable Long id) {
+
+        var queriedBook = booksRepository.findById(id);
+
+        if (queriedBook.isPresent()) {
+
+            var bookToDelete = queriedBook.get();
+
+            bookToDelete.inactive();
 
         }
 

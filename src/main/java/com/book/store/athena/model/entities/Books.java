@@ -38,7 +38,11 @@ public class Books {
 
     String description;
 
+    private Boolean active;
+
     public Books (CreateBooksDto booksDto) {
+
+        this.active = true;
 
         this.name = booksDto.name();
 
@@ -51,6 +55,18 @@ public class Books {
         this.publisher = booksDto.publisher();
 
         this.description = booksDto.description();
+
+    }
+
+    public void activate () {
+
+        this.active = true;
+
+    }
+
+    public void inactive () {
+
+        this.active = false;
 
     }
 
