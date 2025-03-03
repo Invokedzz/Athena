@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "stored_books")
@@ -37,6 +37,8 @@ public class Books {
     Publisher publisher;
 
     String description;
+
+    // content rating
 
     private Boolean active;
 
