@@ -1,11 +1,15 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;
 import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FavoriteServices {
@@ -18,6 +22,12 @@ public class FavoriteServices {
 
     @Autowired
     private BooksRepository booksRepository;
+
+    public List <FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
+
+        return favoriteRepository.findAllByActive(active).stream().map(FindAllFavoritesDto::new).toList();
+
+    }
 
     public void saveBook (Long userId, Long bookId) {
 
@@ -41,7 +51,7 @@ public class FavoriteServices {
 
         if (favorite.isPresent()) {
 
-            Favorite obtainedFav = favorite.get();
+            var obtainedFav = favorite.get();
 
             obtainedFav.disable();
 

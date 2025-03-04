@@ -1,5 +1,6 @@
 package com.book.store.athena.model.entities;
 
+import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,15 @@ public class Favorite {
 
     public Favorite (User users, Books books) {
 
+        this.active = true;
+
         this.users = users;
 
         this.books = books;
+
+    }
+
+    public void activate () {
 
         this.active = true;
 
