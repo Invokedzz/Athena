@@ -32,6 +32,10 @@ public record CreateBooksDto(
 
         @NotBlank
         @Length(max = 1025)
-        String description
+        String description,
+
+        @NotBlank
+        @Length(max = 200)
+        String pdfPath
 
         ) {}

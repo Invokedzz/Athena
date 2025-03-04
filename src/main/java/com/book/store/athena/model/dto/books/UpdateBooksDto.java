@@ -11,6 +11,9 @@ public record UpdateBooksDto (
         String author,
 
         @Length(max = 1025)
-        String description
+        String description,
+
+        @Length(max = 200)
+        String pdfPath
 
         ) {}
