@@ -23,22 +23,23 @@ public class Books {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String name;
+    private String name;
 
-    String author;
+    private String author;
 
     @Enumerated(EnumType.STRING)
-    Genre genre;
+    private Genre genre;
 
     @Column(name = "release_date")
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
 
     @Enumerated(EnumType.STRING)
-    Publisher publisher;
+    private Publisher publisher;
 
-    String description;
+    private String description;
 
-    // content rating
+    @Column(name = "pdf")
+    private String pdfPath;
 
     private Boolean active;
 
@@ -57,6 +58,8 @@ public class Books {
         this.publisher = booksDto.publisher();
 
         this.description = booksDto.description();
+
+        this.pdfPath = booksDto.pdfPath();
 
     }
 
@@ -91,6 +94,13 @@ public class Books {
             this.description = booksDto.description();
 
         }
+
+        if (booksDto.pdfPath() != null) {
+
+            this.pdfPath = booksDto.pdfPath();
+
+        }
+
 
     }
 

@@ -14,14 +14,16 @@ public record FindAllBooksDto(
 
         Publisher publisher,
 
-        String description
+        String description,
+
+        String pdfPath
 
         ) {
 
             public FindAllBooksDto(Books books) {
 
                 this (books.getName(), books.getAuthor(), books.getGenre(),
-                        books.getPublisher(), books.getDescription());
+                        books.getPublisher(), books.getDescription(), books.getPdfPath());
 
             }
 
