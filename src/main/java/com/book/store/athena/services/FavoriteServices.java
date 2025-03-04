@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FavoriteServices {
@@ -45,7 +44,23 @@ public class FavoriteServices {
 
     }
 
-    public void disableBook (Long id) {
+    public void reactivateFavorite (Long id) {
+
+        var favorite = favoriteRepository.findById(id);
+
+        if (favorite.isPresent()) {
+
+            var obtainedFav = favorite.get();
+
+            obtainedFav.activate();
+
+            favoriteRepository.save(obtainedFav);
+
+        }
+
+    }
+
+    public void disableFavorite (Long id) {
 
         var favorite = favoriteRepository.findById(id);
 
@@ -54,6 +69,8 @@ public class FavoriteServices {
             var obtainedFav = favorite.get();
 
             obtainedFav.disable();
+
+            favoriteRepository.save(obtainedFav);
 
         }
 

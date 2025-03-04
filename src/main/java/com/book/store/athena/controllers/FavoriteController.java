@@ -2,8 +2,6 @@ package com.book.store.athena.controllers;
 
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.dto.favorite.RequestFavoriteDto;
-import com.book.store.athena.model.entities.Favorite;
-import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.services.FavoriteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +34,19 @@ public class FavoriteController {
 
     }
 
+    @PutMapping("/reactivate/{id}")
+    protected ResponseEntity <Void> reactivateFavorite (@PathVariable Long id) {
+
+        favoriteServices.reactivateFavorite(id);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
     @DeleteMapping("/disable/{id}")
     protected ResponseEntity <Void> removeFavorite (@PathVariable Long id) {
 
-        favoriteServices.disableBook(id);
+        favoriteServices.disableFavorite(id);
 
         return ResponseEntity.noContent().build();
 
