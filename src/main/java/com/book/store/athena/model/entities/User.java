@@ -1,5 +1,6 @@
 package com.book.store.athena.model.entities;
 
+import com.book.store.athena.model.dto.client.RegisterUserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
@@ -31,5 +32,17 @@ public class User {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List <Favorite> favoriteBooks;
+
+    public User (RegisterUserDto registerUserDto) {
+
+        this.name = registerUserDto.username();
+
+        this.email = registerUserDto.email();
+
+        this.password = registerUserDto.password();
+
+        this.birthDate = registerUserDto.birthDate();
+
+    }
 
 }

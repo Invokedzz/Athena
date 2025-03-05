@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDate;
+
 public record RegisterUserDto (
 
         @NotBlank(message = "username can't be blank!")
@@ -14,7 +16,11 @@ public record RegisterUserDto (
         @Email(message = "please, enter a valid e-mail!")
         String email,
 
+        @NotBlank
+        @Length(min = 6, max = 50, message = "password length must have 6 to 50 characters")
+        String password,
+
         @Past(message = "please, enter a valid birth date!")
-        String birthDate
+        LocalDate birthDate
 
         ) {}
