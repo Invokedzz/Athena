@@ -35,6 +35,8 @@ public class UserController {
 
         var favorites = userServices.findUserBooksById(id);
 
+        if (favorites.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
         return ResponseEntity.ok(favorites);
 
     }
@@ -43,6 +45,8 @@ public class UserController {
     protected ResponseEntity<List<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
         var user = userServices.findUserById(id);
+
+        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         return ResponseEntity.ok(user);
 

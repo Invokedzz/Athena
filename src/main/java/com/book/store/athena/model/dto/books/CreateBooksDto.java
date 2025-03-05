@@ -13,11 +13,11 @@ import java.time.LocalDate;
 public record CreateBooksDto(
 
         @NotBlank
-        @Length(min = 4, max = 50)
+        @Length(min = 4, max = 50, message = "name input length must be between 4 to 50 characters")
         String name,
 
         @NotBlank
-        @Length(min = 4, max = 50)
+        @Length(min = 4, max = 50, message = "author input length must be between 4 to 50 characters")
         String author,
 
         @Enumerated
@@ -31,11 +31,11 @@ public record CreateBooksDto(
         Publisher publisher,
 
         @NotBlank
-        @Length(max = 1025)
+        @Length(max = 1025, message = "description input must be equal or lower than 1025 characters")
         String description,
 
         @NotBlank
-        @Length(max = 200)
+        @Length(max = 200, message = "pdf path must be equal or lower than 200 characters")
         String pdfPath
 
         ) {}

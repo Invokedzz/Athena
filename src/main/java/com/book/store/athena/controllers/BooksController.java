@@ -22,9 +22,9 @@ public class BooksController {
     @Autowired
     private BooksRepository booksRepository;
 
-    @PostMapping
     @Transactional // rollback
-    protected ResponseEntity <Void> postBooks (@RequestBody @Valid CreateBooksDto books) {
+    @PostMapping("/create")
+    protected ResponseEntity <Void> createBook (@RequestBody @Valid CreateBooksDto books) {
 
         booksRepository.save(new Books(books));
 
@@ -33,7 +33,7 @@ public class BooksController {
     }
 
     @GetMapping("/collection")
-    protected ResponseEntity <List <FindAllBooksDto>> findAll () {
+    protected ResponseEntity <List <FindAllBooksDto>> findAllBooks () {
 
         var bookList = booksRepository.findAllByActive(true).stream()
                 .map(FindAllBooksDto::new).toList();
@@ -44,7 +44,7 @@ public class BooksController {
 
     @Transactional
     @PutMapping("/update/{id}")
-    protected ResponseEntity <Void> update (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
+    protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -66,7 +66,7 @@ public class BooksController {
 
     @Transactional
     @PutMapping("/reactivate/{id}")
-    protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
+    protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -88,7 +88,7 @@ public class BooksController {
 
     @Transactional
     @DeleteMapping("/delete/{id}")
-    protected ResponseEntity <Void> delete (@PathVariable Long id) {
+    protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
