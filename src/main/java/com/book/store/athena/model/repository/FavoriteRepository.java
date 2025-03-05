@@ -13,5 +13,4 @@ public interface FavoriteRepository extends JpaRepository <Favorite, Long> {
 
     List <Favorite> findAllByActive (Boolean active);
 
-    Collection<Object> findFavoriteByUsers_Id (Long usersId);
 }
