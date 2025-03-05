@@ -1,6 +1,7 @@
 package com.book.store.athena.model.entities;
 
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Favorite {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User users;
 
