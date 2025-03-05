@@ -1,18 +1,14 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.dto.favorite.RequestFavoriteDto;
-import com.book.store.athena.model.repository.UserRepository;
 import com.book.store.athena.services.FavoriteServices;
-import com.book.store.athena.services.UserServices;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/favorites")

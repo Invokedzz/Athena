@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
-    @GetMapping("/display/{id}")
+    @GetMapping("/profile/books/{id}")
     protected ResponseEntity<List<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
@@ -28,7 +28,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/userprofile/{id}")
+    @GetMapping("/profile/{id}")
     protected ResponseEntity<List<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
         var user = userServices.findUserById(id);

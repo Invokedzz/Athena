@@ -27,7 +27,6 @@ public class User {
 
     private String password;
 
-    @Past
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
