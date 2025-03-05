@@ -6,6 +6,7 @@ import com.book.store.athena.model.dto.favorite.RequestFavoriteDto;
 import com.book.store.athena.model.repository.UserRepository;
 import com.book.store.athena.services.FavoriteServices;
 import com.book.store.athena.services.UserServices;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +21,13 @@ public class FavoriteController {
     @Autowired
     private FavoriteServices favoriteServices;
 
-    @Autowired
-    private UserServices userServices;
-
+    @Transactional
     @PostMapping("/insert")
     protected ResponseEntity <Void> saveFavorite (@RequestBody RequestFavoriteDto requestFavoriteDto) {
 
         favoriteServices.saveBook(requestFavoriteDto.userId(), requestFavoriteDto.bookId());
 
         return ResponseEntity.ok().build();
-
-    }
-
-    @GetMapping("/display/{id}")
-    protected ResponseEntity<List<FindUserBooksByIdDto>>findAllFavorites (@PathVariable Long id) {
-
-        var favorites = userServices.findUserBooksById(id);
-
-        return ResponseEntity.ok(favorites);
 
     }
 
@@ -50,6 +40,7 @@ public class FavoriteController {
 
     }
 
+    @Transactional
     @PutMapping("/reactivate/{id}")
     protected ResponseEntity <Void> reactivateFavorite (@PathVariable Long id) {
 
@@ -59,6 +50,7 @@ public class FavoriteController {
 
     }
 
+    @Transactional
     @DeleteMapping("/disable/{id}")
     protected ResponseEntity <Void> removeFavorite (@PathVariable Long id) {
 
