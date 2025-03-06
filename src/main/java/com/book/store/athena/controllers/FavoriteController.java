@@ -21,7 +21,9 @@ public class FavoriteController {
     @PostMapping("/insert")
     protected ResponseEntity <Void> saveFavorite (@RequestBody RequestFavoriteDto requestFavoriteDto) {
 
-        favoriteServices.saveBook(requestFavoriteDto.userId(), requestFavoriteDto.bookId());
+        var favorite = favoriteServices.saveBook(requestFavoriteDto.userId(), requestFavoriteDto.bookId());
+
+        if (favorite == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().build();
 
@@ -40,7 +42,9 @@ public class FavoriteController {
     @PutMapping("/reactivate/{id}")
     protected ResponseEntity <Void> reactivateFavorite (@PathVariable Long id) {
 
-        favoriteServices.reactivateFavorite(id);
+        var favorite = favoriteServices.reactivateFavorite(id);
+
+        if (favorite == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
 
@@ -50,7 +54,9 @@ public class FavoriteController {
     @DeleteMapping("/disable/{id}")
     protected ResponseEntity <Void> removeFavorite (@PathVariable Long id) {
 
-        favoriteServices.disableFavorite(id);
+        var favorite = favoriteServices.disableFavorite(id);
+
+        if (favorite == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
 

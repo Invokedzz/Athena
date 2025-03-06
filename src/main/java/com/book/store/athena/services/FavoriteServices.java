@@ -28,7 +28,7 @@ public class FavoriteServices {
 
     }
 
-    public void saveBook (Long userId, Long bookId) {
+    public Favorite saveBook (Long userId, Long bookId) {
 
         var user = userRepository.findById(userId);
 
@@ -40,11 +40,15 @@ public class FavoriteServices {
 
             favoriteRepository.save(favorite);
 
+            return favorite;
+
         }
+
+        return null;
 
     }
 
-    public void reactivateFavorite (Long id) {
+    public Favorite reactivateFavorite (Long id) {
 
         var favorite = favoriteRepository.findById(id);
 
@@ -56,11 +60,15 @@ public class FavoriteServices {
 
             favoriteRepository.save(obtainedFav);
 
+            return obtainedFav;
+
         }
+
+        return null;
 
     }
 
-    public void disableFavorite (Long id) {
+    public Favorite disableFavorite (Long id) {
 
         var favorite = favoriteRepository.findById(id);
 
@@ -72,7 +80,11 @@ public class FavoriteServices {
 
             favoriteRepository.save(obtainedFav);
 
+            return obtainedFav;
+
         }
+
+        return null;
 
     }
 

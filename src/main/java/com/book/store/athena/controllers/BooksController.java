@@ -3,7 +3,6 @@ package com.book.store.athena.controllers;
 import com.book.store.athena.model.dto.books.FindAllBooksDto;
 import com.book.store.athena.model.dto.books.CreateBooksDto;
 import com.book.store.athena.model.dto.books.UpdateBooksDto;
-import com.book.store.athena.model.repository.BooksRepository;
 import com.book.store.athena.services.BooksService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -45,7 +44,9 @@ public class BooksController {
     @PutMapping("/update/{id}")
     protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
 
-        booksService.updateById(id, books);
+        var book = booksService.updateById(id, books);
+
+        if (book == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().build();
 
@@ -55,7 +56,9 @@ public class BooksController {
     @PutMapping("/reactivate/{id}")
     protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
-        booksService.reactivateById(id);
+        var book = booksService.reactivateById(id);
+
+        if (book == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
 
@@ -65,7 +68,9 @@ public class BooksController {
     @DeleteMapping("/delete/{id}")
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
-        booksService.disableById(id);
+        var book = booksService.disableById(id);
+
+        if (book == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
 
