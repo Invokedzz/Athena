@@ -3,8 +3,8 @@ package com.book.store.athena.controllers;
 import com.book.store.athena.model.dto.books.FindAllBooksDto;
 import com.book.store.athena.model.dto.books.CreateBooksDto;
 import com.book.store.athena.model.dto.books.UpdateBooksDto;
-import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
+import com.book.store.athena.services.BooksService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import java.util.List;
 public class BooksController {
 
     @Autowired
-    private BooksRepository booksRepository;
+    private BooksService booksService;
 
     @Transactional // rollback
     @PostMapping("/create")
     protected ResponseEntity <Void> createBook (@RequestBody @Valid CreateBooksDto books) {
 
-        booksRepository.save(new Books(books));
+        booksService.registerBook(books);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
@@ -35,8 +35,7 @@ public class BooksController {
     @GetMapping("/collection")
     protected ResponseEntity <List <FindAllBooksDto>> findAllBooks () {
 
-        var bookList = booksRepository.findAllByActive(true).stream()
-                .map(FindAllBooksDto::new).toList();
+        var bookList = booksService.findAll();
 
         return ResponseEntity.ok(bookList);
 
@@ -46,21 +45,9 @@ public class BooksController {
     @PutMapping("/update/{id}")
     protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
 
-        var queriedBook = booksRepository.findById(id);
+        booksService.updateById(id, books);
 
-        if (queriedBook.isPresent()) {
-
-            var bookToUpdate = queriedBook.get();
-
-            bookToUpdate.updateBooks(books);
-
-            booksRepository.save(bookToUpdate);
-
-            return ResponseEntity.ok().build();
-
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
 
     }
 
@@ -68,21 +55,9 @@ public class BooksController {
     @PutMapping("/reactivate/{id}")
     protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
-        var queriedBook = booksRepository.findById(id);
+        booksService.reactivateById(id);
 
-        if (queriedBook.isPresent()) {
-
-            var bookAboutToUpdate = queriedBook.get();
-
-            bookAboutToUpdate.activate();
-
-            booksRepository.save(bookAboutToUpdate);
-
-            return ResponseEntity.noContent().build();
-
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
 
     }
 
@@ -90,19 +65,9 @@ public class BooksController {
     @DeleteMapping("/delete/{id}")
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
-        var queriedBook = booksRepository.findById(id);
+        booksService.disableById(id);
 
-        if (queriedBook.isPresent()) {
-
-            var bookToDelete = queriedBook.get();
-
-            bookToDelete.inactive();
-
-            return ResponseEntity.noContent().build();
-
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
 
     }
 
