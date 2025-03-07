@@ -1,6 +1,6 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
 import com.book.store.athena.model.entities.User;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +22,7 @@ import org.assertj.core.api.Assertions;
 @RunWith(SpringRunner.class)
 class UserServicesTest {
 
-    @Autowired
+    @MockitoBean
     private UserServices userServices;
 
     @MockitoBean
@@ -61,14 +60,15 @@ class UserServicesTest {
         Mockito.when(userRepository.findById(1L))
                 .thenReturn(Optional.of(new User()));
 
-        List <FindUserBooksByIdDto> userBooks = userServices.findUserBooksById(1L);
+        Mockito.when(userServices.findUserBooksById(1L)).thenReturn(new ArrayList<>());
 
-        Assertions.assertThat(userBooks.size())
-                    .isEqualTo(1);
+        userServices.findUserBooksById(1L);
 
-        Assertions.assertThat(userBooks)
-                    .hasSize(1)
-                    .isNotNull();
+        userRepository.findById(1L);
+
+        Mockito.verify(userRepository, Mockito.times(1)).findById(1L);
+
+        Mockito.verify(userServices, Mockito.times(1)).findUserBooksById(1L);
 
     }
 
@@ -78,14 +78,36 @@ class UserServicesTest {
         Mockito.when(userRepository.findUserById(1L))
                 .thenReturn(List.of(new User()));
 
-        List <FindUserByIdDto> userBooks = userServices.findUserById(1L);
+        FindUserByIdDto user = new FindUserByIdDto(1L, "Asuka",
+                                            "asuka@gmail.com", LocalDate.now());
 
-        Assertions.assertThat(userBooks.size())
-                    .isEqualTo(1);
+        Mockito.when(userServices.findUserById(1L)).thenReturn(List.of(user));
 
-        Assertions.assertThat(userBooks)
-                    .hasSize(1)
-                    .isNotNull();
+        userRepository.findUserById(1L);
+
+        List <FindUserByIdDto> list = userServices.findUserById(1L);
+
+        Mockito.verify(userRepository, Mockito.times(1)).findUserById(1L);
+
+        Mockito.verify(userServices, Mockito.times(1)).findUserById(1L);
+
+        Assertions.assertThat(list.size()).isEqualTo(1);
+
+        Assertions.assertThat(list.getFirst()).isNotNull();
+
+    }
+
+    @Test
+    void findAllUsersByActive_ThenReturnThem () {
+
+        FindAllActiveUsersDto activeUsers = new FindAllActiveUsersDto(1L, "Shinji Ika",
+                                        "shinji@gmail.com", LocalDate.now());
+
+        Mockito.when(userServices.findAll(Mockito.anyBoolean())).thenReturn(List.of(activeUsers));
+
+        userServices.findAll(Mockito.anyBoolean());
+
+        Mockito.verify(userServices, Mockito.times(1)).findAll(Mockito.anyBoolean());
 
     }
 

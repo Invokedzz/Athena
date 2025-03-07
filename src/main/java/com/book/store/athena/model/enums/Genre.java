@@ -12,4 +12,12 @@ public enum Genre {
 
     SCI_FI,
 
+    DRAMA,
+
+    SLICE_OF_LIFE,
+
+    COMEDY,
+
+    TERROR,
+
 }
