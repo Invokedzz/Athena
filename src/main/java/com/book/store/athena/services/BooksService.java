@@ -13,8 +13,13 @@ import java.util.List;
 @Service
 public class BooksService {
 
-    @Autowired
-    private BooksRepository booksRepository;
+    private final BooksRepository booksRepository;
+
+    public BooksService (BooksRepository booksRepository) {
+
+        this.booksRepository = booksRepository;
+
+    }
 
     public void registerBook (CreateBooksDto createBooksDto) {
 

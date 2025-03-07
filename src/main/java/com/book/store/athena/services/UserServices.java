@@ -4,10 +4,7 @@ import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,11 +12,17 @@ import java.util.List;
 @Service
 public class UserServices {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private SecurityConfig securityConfig;
+    private final SecurityConfig securityConfig;
+
+    public UserServices(UserRepository userRepository, SecurityConfig securityConfig) {
+
+        this.userRepository = userRepository;
+
+        this.securityConfig = securityConfig;
+
+    }
 
     public void createUser (RegisterUserDto registerUserDto) {
 

@@ -5,7 +5,6 @@ import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;
 import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.model.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +12,22 @@ import java.util.List;
 @Service
 public class FavoriteServices {
 
-    @Autowired
-    private FavoriteRepository favoriteRepository;
+    private final FavoriteRepository favoriteRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private BooksRepository booksRepository;
+    private final BooksRepository booksRepository;
+
+    public FavoriteServices (FavoriteRepository favoriteRepository, UserRepository userRepository,
+                                BooksRepository booksRepository) {
+
+        this.favoriteRepository = favoriteRepository;
+
+        this.userRepository = userRepository;
+
+        this.booksRepository = booksRepository;
+
+    }
 
     public List <FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
 
