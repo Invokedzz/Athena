@@ -3,6 +3,7 @@ package com.book.store.athena.services;
 import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
+import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,66 @@ public class UserServices {
     public List <FindUserByIdDto> findUserById (Long userId) {
 
         return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).toList();
+
+    }
+
+    public User updateUser (Long id, UpdateUserDto updateUserDto) {
+
+        var searchForUser = userRepository.findById(id);
+
+        if (searchForUser.isPresent()) {
+
+            var obtainedUser = searchForUser.get();
+
+            obtainedUser.update(updateUserDto);
+
+            userRepository.save(obtainedUser);
+
+            return obtainedUser;
+
+        }
+
+        return null;
+
+    }
+
+    public User disableUser (Long id) {
+
+        var searchForUser = userRepository.findById(id);
+
+        if (searchForUser.isPresent()) {
+
+            var obtainedUser = searchForUser.get();
+
+            obtainedUser.disableAccount();
+
+            userRepository.save(obtainedUser);
+
+            return obtainedUser;
+
+        }
+
+        return null;
+
+    }
+
+    public User reactivateUser (Long id) {
+
+        var searchForUser = userRepository.findById(id);
+
+        if (searchForUser.isPresent()) {
+
+            var obtainedUser = searchForUser.get();
+
+            obtainedUser.activateAccount();
+
+            userRepository.save(obtainedUser);
+
+            return obtainedUser;
+
+        }
+
+        return null;
 
     }
 

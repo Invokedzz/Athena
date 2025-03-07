@@ -3,6 +3,7 @@ package com.book.store.athena.controllers;
 import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
+import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,17 @@ public class UserController {
         if (user.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         return ResponseEntity.ok(user);
+
+    }
+
+    @PutMapping("/profile/update/{id}")
+    protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
+
+        var user = userServices.updateUser(id, updateUserDto);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.noContent().build();
 
     }
 

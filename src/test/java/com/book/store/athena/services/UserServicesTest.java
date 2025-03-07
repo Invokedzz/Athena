@@ -39,13 +39,17 @@ class UserServicesTest {
 
         User user = new User(registerUserDto);
 
-        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
+        Mockito.when(userRepository.save(Mockito.any(User.class)))
+                    .thenReturn(user);
 
-        Assertions.assertThat(registerUserDto.username()).isEqualTo("Shinji");
+        Assertions.assertThat(registerUserDto.username())
+                    .isEqualTo("Shinji");
 
-        Assertions.assertThat(registerUserDto.email()).isEqualTo("Ikari@gmail.com");
+        Assertions.assertThat(registerUserDto.email())
+                    .isEqualTo("Ikari@gmail.com");
 
-        Assertions.assertThat(registerUserDto.password()).isEqualTo("123456");
+        Assertions.assertThat(registerUserDto.password())
+                    .isEqualTo("123456");
 
         Assertions.assertThat(BCrypt.checkpw("123456", hashPassword)).isTrue();
 
@@ -54,26 +58,34 @@ class UserServicesTest {
     @Test
     void findUserBooksById_ReturnUserBooks () {
 
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
+        Mockito.when(userRepository.findById(1L))
+                .thenReturn(Optional.of(new User()));
 
         List <FindUserBooksByIdDto> userBooks = userServices.findUserBooksById(1L);
 
-        Assertions.assertThat(userBooks.size()).isEqualTo(1);
+        Assertions.assertThat(userBooks.size())
+                    .isEqualTo(1);
 
-        Assertions.assertThat(userBooks).hasSize(1).isNotNull();
+        Assertions.assertThat(userBooks)
+                    .hasSize(1)
+                    .isNotNull();
 
     }
 
     @Test
     void findUserById_ReturnUser () {
 
-        Mockito.when(userRepository.findUserById(1L)).thenReturn(List.of(new User()));
+        Mockito.when(userRepository.findUserById(1L))
+                .thenReturn(List.of(new User()));
 
         List <FindUserByIdDto> userBooks = userServices.findUserById(1L);
 
-        Assertions.assertThat(userBooks.size()).isEqualTo(1);
+        Assertions.assertThat(userBooks.size())
+                    .isEqualTo(1);
 
-        Assertions.assertThat(userBooks).hasSize(1).isNotNull();
+        Assertions.assertThat(userBooks)
+                    .hasSize(1)
+                    .isNotNull();
 
     }
 

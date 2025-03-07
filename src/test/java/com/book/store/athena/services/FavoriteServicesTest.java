@@ -44,28 +44,36 @@ class FavoriteServicesTest {
     @Test
     void findFavoriteByActive() {
 
-        Mockito.when(favoriteRepository.findAllByActive(Mockito.anyBoolean())).thenReturn(List.of(new Favorite(new User(), new Books())));
+        Mockito.when(favoriteRepository.findAllByActive(Mockito.anyBoolean()))
+                .thenReturn(List.of(new Favorite(new User(), new Books())));
 
         List <FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
 
-        Assertions.assertThat(favoriteList.size()).isEqualTo(1);
+        Assertions.assertThat(favoriteList.size())
+                    .isEqualTo(1);
 
-        Assertions.assertThat(favoriteList).hasSize(1).isNotNull();
+        Assertions.assertThat(favoriteList)
+                    .hasSize(1)
+                    .isNotNull();
 
     }
 
     @Test
     void saveBook_ThenReturnFavorite () {
 
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
+        Mockito.when(userRepository.findById(1L))
+                .thenReturn(Optional.of(new User()));
 
-        Mockito.when(booksRepository.findById(1L)).thenReturn(Optional.of(new Books()));
+        Mockito.when(booksRepository.findById(1L))
+                .thenReturn(Optional.of(new Books()));
 
-        Mockito.when(favoriteRepository.save(Mockito.any(Favorite.class))).thenReturn(new Favorite(new User(), new Books()));
+        Mockito.when(favoriteRepository.save(Mockito.any(Favorite.class)))
+                .thenReturn(new Favorite(new User(), new Books()));
 
         favoriteRepository.save(new Favorite(new User(), new Books()));
 
-        Mockito.verify(favoriteRepository, times(1)).save(Mockito.any(Favorite.class));
+        Mockito.verify(favoriteRepository, times(1))
+                .save(Mockito.any(Favorite.class));
 
     }
 
