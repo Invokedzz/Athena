@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,9 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @PostMapping("/register")
     protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDto registerUserDto) {
 
@@ -26,6 +31,17 @@ public class UserController {
         userServices.createUser(registerUserDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+
+    }
+
+    @PostMapping("/login")
+    protected ResponseEntity<?> login (@RequestBody @Valid UserLoginDto userLoginDto) {
+
+        var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
+
+        var authToken = authenticationManager.authenticate(token);
+
+        return ResponseEntity.ok(authToken);
 
     }
 

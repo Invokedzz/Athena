@@ -1,5 +1,6 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
@@ -17,9 +18,12 @@ public class UserServices {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SecurityConfig securityConfig;
+
     public void createUser (RegisterUserDto registerUserDto) {
 
-        String userPassword = BCrypt.hashpw(registerUserDto.password(), BCrypt.gensalt());
+        String userPassword = securityConfig.passwordEncoder().encode(registerUserDto.password());
 
         User user = new User(registerUserDto);
 
