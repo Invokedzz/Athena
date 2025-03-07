@@ -1,5 +1,6 @@
 package com.book.store.athena.model.entities;
 
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
 import com.book.store.athena.model.dto.client.UpdateUserDto;
 import jakarta.persistence.*;

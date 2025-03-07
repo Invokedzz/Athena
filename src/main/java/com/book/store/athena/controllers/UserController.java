@@ -1,9 +1,7 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
-import com.book.store.athena.model.dto.client.FindUserByIdDto;
-import com.book.store.athena.model.dto.client.RegisterUserDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.dto.client.*;
+import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +58,38 @@ public class UserController {
 
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+    @GetMapping("/actives")
+    protected ResponseEntity <List<FindAllActiveUsersDto>> findAllUsers () {
+
+        List <FindAllActiveUsersDto> userList = userServices.findAll(true);
+
+        return ResponseEntity.ok(userList);
+
+    }
+
+    @PutMapping("/reactivate/{id}")
+    protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
+
+        var user = userServices.reactivateUser(id);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+    @DeleteMapping("/disable/{id}")
+    protected ResponseEntity <Void> disable (@PathVariable Long id) {
+
+        var user = userServices.disableUser(id);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 

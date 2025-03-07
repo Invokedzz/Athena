@@ -1,5 +1,7 @@
 package com.book.store.athena.model.repository;
 
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
+import com.book.store.athena.model.dto.client.RegisterUserDto;
 import com.book.store.athena.model.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ public interface UserRepository extends JpaRepository <User, Long> {
 
     List <User> findUserById (Long id);
 
-    UserDetails findUserByName(String name);
+    UserDetails findUserByName (String name);
 
+    List<User> findAllByActive(Boolean active);
 }
