@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/profile/books/{id}")
-    protected ResponseEntity<List<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
+    protected ResponseEntity<Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
 
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    protected ResponseEntity<List<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
+    protected ResponseEntity<Set<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
         var user = userServices.findUserById(id);
 
@@ -79,9 +80,9 @@ public class UserController {
     }
 
     @GetMapping("/actives")
-    protected ResponseEntity <List<FindAllActiveUsersDto>> findAllUsers () {
+    protected ResponseEntity <Set<FindAllActiveUsersDto>> findAllUsers () {
 
-        List <FindAllActiveUsersDto> userList = userServices.findAll(true);
+        Set <FindAllActiveUsersDto> userList = userServices.findAll(true);
 
         return ResponseEntity.ok(userList);
 

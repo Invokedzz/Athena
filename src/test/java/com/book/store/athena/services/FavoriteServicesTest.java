@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -47,7 +48,7 @@ class FavoriteServicesTest {
         Mockito.when(favoriteRepository.findAllByActive(Mockito.anyBoolean()))
                 .thenReturn(List.of(new Favorite(new User(), new Books())));
 
-        List <FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
+        Set<FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
 
         Assertions.assertThat(favoriteList.size())
                     .isEqualTo(1);

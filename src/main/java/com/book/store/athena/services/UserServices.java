@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServices {
@@ -36,15 +38,15 @@ public class UserServices {
 
     }
 
-    public List <FindUserBooksByIdDto> findUserBooksById (Long userId) {
+    public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
 
-        return userRepository.findById(userId).stream().map(FindUserBooksByIdDto::new).toList();
+        return userRepository.findById(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
 
     }
 
-    public List <FindUserByIdDto> findUserById (Long userId) {
+    public Set <FindUserByIdDto> findUserById (Long userId) {
 
-        return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).toList();
+        return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).collect(Collectors.toSet());
 
     }
 
@@ -108,9 +110,9 @@ public class UserServices {
 
     }
 
-    public List <FindAllActiveUsersDto> findAll (Boolean active) {
+    public Set <FindAllActiveUsersDto> findAll (Boolean active) {
 
-        return userRepository.findAllByActive(active).stream().map(FindAllActiveUsersDto::new).toList();
+        return userRepository.findAllByActive(active).stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
 
     }
 

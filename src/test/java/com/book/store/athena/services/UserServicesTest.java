@@ -60,7 +60,7 @@ class UserServicesTest {
         Mockito.when(userRepository.findById(1L))
                 .thenReturn(Optional.of(new User()));
 
-        Mockito.when(userServices.findUserBooksById(1L)).thenReturn(new ArrayList<>());
+        Mockito.when(userServices.findUserBooksById(1L)).thenReturn(new HashSet<>());
 
         userServices.findUserBooksById(1L);
 
@@ -76,24 +76,22 @@ class UserServicesTest {
     void findUserById_ReturnUser () {
 
         Mockito.when(userRepository.findUserById(1L))
-                .thenReturn(List.of(new User()));
+                .thenReturn(Set.of(new User()));
 
         FindUserByIdDto user = new FindUserByIdDto(1L, "Asuka",
                                             "asuka@gmail.com", LocalDate.now());
 
-        Mockito.when(userServices.findUserById(1L)).thenReturn(List.of(user));
+        Mockito.when(userServices.findUserById(1L)).thenReturn(Set.of(user));
 
         userRepository.findUserById(1L);
 
-        List <FindUserByIdDto> list = userServices.findUserById(1L);
+        Set <FindUserByIdDto> list = userServices.findUserById(1L);
 
         Mockito.verify(userRepository, Mockito.times(1)).findUserById(1L);
 
         Mockito.verify(userServices, Mockito.times(1)).findUserById(1L);
 
         Assertions.assertThat(list.size()).isEqualTo(1);
-
-        Assertions.assertThat(list.getFirst()).isNotNull();
 
     }
 
@@ -103,7 +101,7 @@ class UserServicesTest {
         FindAllActiveUsersDto activeUsers = new FindAllActiveUsersDto(1L, "Shinji Ika",
                                         "shinji@gmail.com", LocalDate.now());
 
-        Mockito.when(userServices.findAll(Mockito.anyBoolean())).thenReturn(List.of(activeUsers));
+        Mockito.when(userServices.findAll(Mockito.anyBoolean())).thenReturn(Set.of(activeUsers));
 
         userServices.findAll(Mockito.anyBoolean());
 

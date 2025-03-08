@@ -8,6 +8,8 @@ import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoriteServices {
@@ -29,9 +31,9 @@ public class FavoriteServices {
 
     }
 
-    public List <FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
+    public Set<FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
 
-        return favoriteRepository.findAllByActive(active).stream().map(FindAllFavoritesDto::new).toList();
+        return favoriteRepository.findAllByActive(active).stream().map(FindAllFavoritesDto::new).collect(Collectors.toSet());
 
     }
 
