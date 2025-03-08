@@ -4,8 +4,9 @@ import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.entities.User;
 
 import java.util.List;
+import java.util.Set;
 
-public record FindUserBooksByIdDto (List <Favorite> favorites) {
+public record FindUserBooksByIdDto (Set <Favorite> favorites) {
 
     public FindUserBooksByIdDto (User user) {
 

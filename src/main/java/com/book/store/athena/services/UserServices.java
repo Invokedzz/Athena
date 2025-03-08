@@ -2,7 +2,9 @@ package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
+import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
+import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,15 @@ public class UserServices {
 
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
+
     private final SecurityConfig securityConfig;
 
-    public UserServices(UserRepository userRepository, SecurityConfig securityConfig) {
+    public UserServices(UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig) {
 
         this.userRepository = userRepository;
+
+        this.roleRepository = roleRepository;
 
         this.securityConfig = securityConfig;
 
@@ -28,13 +34,23 @@ public class UserServices {
 
     public void createUser (RegisterUserDto registerUserDto) {
 
+        var role = roleRepository.findById(1L);
+
         String userPassword = securityConfig.passwordEncoder().encode(registerUserDto.password());
 
         User user = new User(registerUserDto);
 
         user.setPassword(userPassword);
 
-        userRepository.save(user);
+        var savedUser = userRepository.save(user);
+
+        if (role.isPresent()) {
+
+            var obtainedRole = role.get();
+
+            roleRepository.insertUserRole(savedUser.getId(), obtainedRole.getId());
+
+        }
 
     }
 

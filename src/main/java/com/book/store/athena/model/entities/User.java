@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -35,7 +37,12 @@ public class User implements UserDetails {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    private List <Favorite> favoriteBooks;
+    private Set <Favorite> favoriteBooks;
+
+    @OneToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set <Role> roles;
 
     private Boolean active;
 

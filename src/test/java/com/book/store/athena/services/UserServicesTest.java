@@ -3,6 +3,7 @@ package com.book.store.athena.services;
 import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
+import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
 import org.junit.jupiter.api.Test;
