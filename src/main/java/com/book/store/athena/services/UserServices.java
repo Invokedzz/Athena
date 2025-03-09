@@ -2,26 +2,39 @@ package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
+import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
+import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServices {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private SecurityConfig securityConfig;
+    private final RoleRepository roleRepository;
+
+    private final SecurityConfig securityConfig;
+
+    public UserServices(UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig) {
+
+        this.userRepository = userRepository;
+
+        this.roleRepository = roleRepository;
+
+        this.securityConfig = securityConfig;
+
+    }
 
     public void createUser (RegisterUserDto registerUserDto) {
+
+        var role = roleRepository.findById(1L);
 
         String userPassword = securityConfig.passwordEncoder().encode(registerUserDto.password());
 
@@ -29,19 +42,27 @@ public class UserServices {
 
         user.setPassword(userPassword);
 
-        userRepository.save(user);
+        var savedUser = userRepository.save(user);
+
+        if (role.isPresent()) {
+
+            var obtainedRole = role.get();
+
+            roleRepository.insertUserRole(savedUser.getId(), obtainedRole.getId());
+
+        }
 
     }
 
-    public List <FindUserBooksByIdDto> findUserBooksById (Long userId) {
+    public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
 
-        return userRepository.findById(userId).stream().map(FindUserBooksByIdDto::new).toList();
+        return userRepository.findById(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
 
     }
 
-    public List <FindUserByIdDto> findUserById (Long userId) {
+    public Set <FindUserByIdDto> findUserById (Long userId) {
 
-        return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).toList();
+        return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).collect(Collectors.toSet());
 
     }
 
@@ -105,9 +126,9 @@ public class UserServices {
 
     }
 
-    public List <FindAllActiveUsersDto> findAll (Boolean active) {
+    public Set <FindAllActiveUsersDto> findAll (Boolean active) {
 
-        return userRepository.findAllByActive(active).stream().map(FindAllActiveUsersDto::new).toList();
+        return userRepository.findAllByActive(active).stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
 
     }
 

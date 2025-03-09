@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/favorites")
@@ -30,7 +31,7 @@ public class FavoriteController {
     }
 
     @GetMapping("/display")
-    protected ResponseEntity <List<FindAllFavoritesDto>> findAllFavoritesByActive () {
+    protected ResponseEntity <Set<FindAllFavoritesDto>> findAllFavoritesByActive () {
 
         var favorites = favoriteServices.findFavoriteByActive(true);
 
