@@ -2,15 +2,18 @@ package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
+import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
+import org.hibernate.type.OrderedSetType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,15 +57,26 @@ public class UserServices {
 
     }
 
+    @Transactional
     public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
 
-        return userRepository.findById(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
+        var user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+
+            var obtainedUser = user.get();
+
+            return obtainedUser.getFavoriteBooks().stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
+
+        }
+
+        return Set.of();
 
     }
 
     public Set <FindUserByIdDto> findUserById (Long userId) {
 
-        return userRepository.findUserById(userId).stream().map(FindUserByIdDto::new).collect(Collectors.toSet());
+        return userRepository.findById(userId).stream().map(FindUserByIdDto::new).collect(Collectors.toCollection(OrderedHashSet::new));
 
     }
 

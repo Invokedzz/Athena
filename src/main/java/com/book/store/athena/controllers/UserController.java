@@ -1,30 +1,43 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.model.dto.client.*;
+import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.User;
+import com.book.store.athena.model.repository.FavoriteRepository;
+import com.book.store.athena.services.FavoriteServices;
 import com.book.store.athena.services.UserServices;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserServices userServices;
+    private final UserServices userServices;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
+    public UserController(UserServices userServices, AuthenticationManager authenticationManager) {
+
+        this.userServices = userServices;
+
+        this.authenticationManager = authenticationManager;
+
+    }
+
+    @PostMapping("/register") // user
     protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDto registerUserDto) {
 
         if (!userServices.isUserAgeAbove15(registerUserDto.birthDate())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -35,8 +48,8 @@ public class UserController {
 
     }
 
-    @PostMapping("/login")
-    protected ResponseEntity<?> login (@RequestBody @Valid UserLoginDto userLoginDto) {
+    @PostMapping("/login") // user
+    protected ResponseEntity<Authentication> login (@RequestBody @Valid UserLoginDto userLoginDto) {
 
         var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
 
@@ -46,18 +59,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/profile/books/{id}")
+    @GetMapping("/profile/books/{id}") // user
     protected ResponseEntity<Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
 
-        if (favorites.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        System.out.println(favorites);
 
         return ResponseEntity.ok(favorites);
 
     }
 
-    @GetMapping("/profile/{id}")
+    @GetMapping("/profile/{id}") // user
     protected ResponseEntity<Set<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
         var user = userServices.findUserById(id);
@@ -68,7 +81,16 @@ public class UserController {
 
     }
 
-    @PutMapping("/profile/update/{id}")
+    @GetMapping("/{id}")
+    protected ResponseEntity <Set<FindUserBooksByIdDto>> findUserBookById (@PathVariable Long id) {
+
+        var user = userServices.findUserBooksById(id);
+
+        return ResponseEntity.ok(user);
+
+    }
+
+    @PutMapping("/profile/update/{id}") // user
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
 
         var user = userServices.updateUser(id, updateUserDto);
@@ -79,7 +101,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/actives")
+    @GetMapping("/actives") // admin
     protected ResponseEntity <Set<FindAllActiveUsersDto>> findAllUsers () {
 
         Set <FindAllActiveUsersDto> userList = userServices.findAll(true);
@@ -88,7 +110,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/reactivate/{id}")
+    @PutMapping("/profile/reactivate/{id}")
     protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
 
         var user = userServices.reactivateUser(id);
@@ -99,7 +121,7 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/disable/{id}")
+    @DeleteMapping("/profile/disable/{id}")
     protected ResponseEntity <Void> disable (@PathVariable Long id) {
 
         var user = userServices.disableUser(id);

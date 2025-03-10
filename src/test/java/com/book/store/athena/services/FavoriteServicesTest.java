@@ -48,7 +48,7 @@ class FavoriteServicesTest {
         Mockito.when(favoriteRepository.findAllByActive(Mockito.anyBoolean()))
                 .thenReturn(List.of(new Favorite(new User(), new Books())));
 
-        Set<FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
+        Set <FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
 
         Assertions.assertThat(favoriteList.size())
                     .isEqualTo(1);

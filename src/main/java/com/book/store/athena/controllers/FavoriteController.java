@@ -19,7 +19,7 @@ public class FavoriteController {
     private FavoriteServices favoriteServices;
 
     @Transactional
-    @PostMapping("/insert")
+    @PostMapping("/insert") // user
     protected ResponseEntity <Void> saveFavorite (@RequestBody RequestFavoriteDto requestFavoriteDto) {
 
         var favorite = favoriteServices.saveBook(requestFavoriteDto.userId(), requestFavoriteDto.bookId());
@@ -30,7 +30,7 @@ public class FavoriteController {
 
     }
 
-    @GetMapping("/display")
+    @GetMapping("/display") // admin
     protected ResponseEntity <Set<FindAllFavoritesDto>> findAllFavoritesByActive () {
 
         var favorites = favoriteServices.findFavoriteByActive(true);
@@ -40,7 +40,7 @@ public class FavoriteController {
     }
 
     @Transactional
-    @PutMapping("/reactivate/{id}")
+    @PutMapping("/reactivate/{id}") // user
     protected ResponseEntity <Void> reactivateFavorite (@PathVariable Long id) {
 
         var favorite = favoriteServices.reactivateFavorite(id);
@@ -52,7 +52,7 @@ public class FavoriteController {
     }
 
     @Transactional
-    @DeleteMapping("/disable/{id}")
+    @DeleteMapping("/disable/{id}") // user
     protected ResponseEntity <Void> removeFavorite (@PathVariable Long id) {
 
         var favorite = favoriteServices.disableFavorite(id);

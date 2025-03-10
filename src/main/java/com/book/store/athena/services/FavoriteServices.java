@@ -1,5 +1,6 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;
@@ -7,7 +8,6 @@ import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +21,7 @@ public class FavoriteServices {
     private final BooksRepository booksRepository;
 
     public FavoriteServices (FavoriteRepository favoriteRepository, UserRepository userRepository,
-                                BooksRepository booksRepository) {
+                             BooksRepository booksRepository) {
 
         this.favoriteRepository = favoriteRepository;
 
@@ -31,9 +31,10 @@ public class FavoriteServices {
 
     }
 
-    public Set<FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
+    public Set <FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
 
-        return favoriteRepository.findAllByActive(active).stream().map(FindAllFavoritesDto::new).collect(Collectors.toSet());
+        return favoriteRepository.findAllByActive(active).stream()
+                .map(FindAllFavoritesDto::new).collect(Collectors.toSet());
 
     }
 
