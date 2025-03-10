@@ -21,4 +21,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query(value = "insert into user_roles (user_id, role_id) values (:user_id, :role_id)", nativeQuery = true)
     void insertUserRole (@Param("user_id") Long userId, @Param("role_id") Long roleId);
 
+    // param value must be equal to the db column name :p
+
 }

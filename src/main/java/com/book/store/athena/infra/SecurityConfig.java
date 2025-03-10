@@ -23,6 +23,10 @@ public class SecurityConfig {
                 .sessionManagement(custom ->
                         custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
 
+        /*                .authorizeHttpRequests(userMatchers ->
+                        userMatchers.requestMatchers("/users/profile/**", "/books/collection",
+                                "/books/create").permitAll())*/
+
     }
 
     @Bean

@@ -10,6 +10,6 @@ import java.util.Set;
 @Repository
 public interface BooksRepository extends JpaRepository <Books, Long> {
 
-    Set <Books> findAllByActive (Boolean active);
+    List <Books> findAllByActive (Boolean active);
 
 }

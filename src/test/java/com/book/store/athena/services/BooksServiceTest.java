@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -40,7 +41,7 @@ class BooksServiceTest {
 
         Mockito.when(booksRepository.findAllByActive(true)).thenReturn(List.of(new Books()));
 
-        List <FindAllBooksDto> findAllBooksDtoList = booksService.findAll();
+        Set <FindAllBooksDto> findAllBooksDtoList = booksService.findAll();
 
         Mockito.when(booksService.findAll()).thenReturn(findAllBooksDtoList);
 
