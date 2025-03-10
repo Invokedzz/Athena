@@ -4,11 +4,13 @@ import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode
 @Table(name = "favorites")
 public class Favorite {
 
