@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -32,7 +33,7 @@ public class BooksController {
     }
 
     @GetMapping("/collection")
-    protected ResponseEntity <List <FindAllBooksDto>> findAllBooks () {
+    protected ResponseEntity <Set<FindAllBooksDto>> findAllBooks () {
 
         var bookList = booksService.findAll();
 
@@ -53,7 +54,7 @@ public class BooksController {
     }
 
     @Transactional
-    @PutMapping("/reactivate/{id}")
+    @PutMapping("/reactivate/{id}") // admin
     protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
         var book = booksService.reactivateById(id);
@@ -65,7 +66,7 @@ public class BooksController {
     }
 
     @Transactional
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}") // admin
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
         var book = booksService.disableById(id);
