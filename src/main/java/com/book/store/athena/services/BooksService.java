@@ -5,10 +5,12 @@ import com.book.store.athena.model.dto.books.FindAllBooksDto;
 import com.book.store.athena.model.dto.books.UpdateBooksDto;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.SecondaryTable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BooksService {
@@ -27,10 +29,10 @@ public class BooksService {
 
     }
 
-    public List <FindAllBooksDto> findAll () {
+    public Set< FindAllBooksDto> findAll () {
 
         return booksRepository.findAllByActive(true).stream()
-                .map(FindAllBooksDto::new).toList();
+                .map(FindAllBooksDto::new).collect(Collectors.toSet());
 
     }
 
@@ -83,6 +85,8 @@ public class BooksService {
             var bookToDelete = queriedBook.get();
 
             bookToDelete.inactive();
+
+            booksRepository.save(bookToDelete);
 
             return bookToDelete;
 
