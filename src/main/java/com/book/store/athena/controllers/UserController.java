@@ -1,15 +1,9 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.model.dto.client.*;
-import com.book.store.athena.model.entities.Books;
-import com.book.store.athena.model.entities.User;
-import com.book.store.athena.model.repository.FavoriteRepository;
-import com.book.store.athena.services.FavoriteServices;
+import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.services.UserServices;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.antlr.v4.runtime.misc.OrderedHashSet;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/users")
@@ -60,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/profile/books/{id}") // user
-    protected ResponseEntity<Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
+    protected ResponseEntity <Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
 
@@ -82,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    protected ResponseEntity <Set<FindUserBooksByIdDto>> findUserBookById (@PathVariable Long id) {
+    protected ResponseEntity<Set<FindUserBooksByIdDto>> findUserBookById (@PathVariable Long id) {
 
         var user = userServices.findUserBooksById(id);
 

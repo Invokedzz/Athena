@@ -3,6 +3,7 @@ package com.book.store.athena.model.entities;
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode
+@AllArgsConstructor
+@EqualsAndHashCode()
 @Table(name = "favorites")
 public class Favorite {
 
@@ -19,7 +21,6 @@ public class Favorite {
     private Long id;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User users;
 
@@ -50,5 +51,6 @@ public class Favorite {
         this.active = false;
 
     }
+
 
 }
