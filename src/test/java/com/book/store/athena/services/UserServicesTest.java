@@ -3,7 +3,7 @@ package com.book.store.athena.services;
 import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
-import com.book.store.athena.model.entities.Role;
+import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -61,38 +61,38 @@ class UserServicesTest {
         Mockito.when(userRepository.findById(1L))
                 .thenReturn(Optional.of(new User()));
 
-        //Mockito.when(userServices.findUserBooksById(1L)).thenReturn(new ArrayList<>());
+        Mockito.when(userServices.findUserBooksById(1L)).thenReturn(new HashSet<>());
 
-        //userServices.findUserBooksById(1L);
+        userServices.findUserBooksById(1L);
 
-        //userRepository.findById(1L);
+        userRepository.findById(1L);
 
-        //Mockito.verify(userRepository, Mockito.times(1)).findById(1L);
+        Mockito.verify(userRepository, Mockito.times(1)).findById(1L);
 
-        //Mockito.verify(userServices, Mockito.times(1)).findUserBooksById(1L);
+        Mockito.verify(userServices, Mockito.times(1)).findUserBooksById(1L);
 
     }
 
     @Test
-    void findUserById_ReturnUser () {
+    void findUserById_ReturnUserAndBooks () {
 
-        //Mockito.when(userRepository.findUserById(1L))
-             //   .thenReturn(TreeSet.of(new User()));
+        Mockito.when(userRepository.findFavoriteBooksByUserId(1L))
+                .thenReturn(List.of(new Books()));
 
         FindUserByIdDto user = new FindUserByIdDto(1L, "Asuka",
                                             "asuka@gmail.com", LocalDate.now());
 
-        //Mockito.when(userServices.findUserById(1L)).thenReturn(List.of(user));
+        Mockito.when(userServices.findUserById(1L)).thenReturn(Set.of(user));
 
-        //userRepository.findUserById(1L);
+        userRepository.findFavoriteBooksByUserId(1L);
 
-        //List <FindUserByIdDto> list = userServices.findUserById(1L);
+        Set <FindUserByIdDto> list = userServices.findUserById(1L);
 
-        //Mockito.verify(userRepository, Mockito.times(1)).findUserById(1L);
+        Mockito.verify(userRepository, Mockito.times(1)).findFavoriteBooksByUserId(1L);
 
         Mockito.verify(userServices, Mockito.times(1)).findUserById(1L);
 
-        //Assertions.assertThat(list.size()).isEqualTo(1);
+        Assertions.assertThat(list.size()).isEqualTo(1);
 
     }
 

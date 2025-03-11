@@ -1,7 +1,8 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.*;
-import com.book.store.athena.model.entities.Favorite;
+import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -22,11 +22,15 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserController(UserServices userServices, AuthenticationManager authenticationManager) {
+    private final TokenAuthService tokenAuthService;
+
+    public UserController(UserServices userServices, AuthenticationManager authenticationManager, TokenAuthService tokenAuthService) {
 
         this.userServices = userServices;
 
         this.authenticationManager = authenticationManager;
+
+        this.tokenAuthService = tokenAuthService;
 
     }
 
@@ -42,13 +46,13 @@ public class UserController {
     }
 
     @PostMapping("/login") // user
-    protected ResponseEntity<Authentication> login (@RequestBody @Valid UserLoginDto userLoginDto) {
+    protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDto userLoginDto) {
 
         var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
 
         var authToken = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok(authToken);
+        return ResponseEntity.ok(tokenAuthService.generateJWToken((User) authToken.getPrincipal()));
 
     }
 
@@ -69,15 +73,6 @@ public class UserController {
         var user = userServices.findUserById(id);
 
         if (user.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-        return ResponseEntity.ok(user);
-
-    }
-
-    @GetMapping("/{id}")
-    protected ResponseEntity<Set<FindUserBooksByIdDto>> findUserBookById (@PathVariable Long id) {
-
-        var user = userServices.findUserBooksById(id);
 
         return ResponseEntity.ok(user);
 

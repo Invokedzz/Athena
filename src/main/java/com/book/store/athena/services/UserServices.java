@@ -54,7 +54,6 @@ public class UserServices {
 
     }
 
-    @Transactional
     public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
 
         return userRepository.findFavoriteBooksByUserId(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
