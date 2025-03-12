@@ -2,6 +2,7 @@ package com.book.store.athena.infra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,11 +22,10 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(custom ->
-                        custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
-
-        /*                .authorizeHttpRequests(userMatchers ->
-                        userMatchers.requestMatchers("/users/profile/**", "/books/collection",
-                                "/books/create").permitAll())*/
+                        custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .authorizeHttpRequests(e ->
+                                e.requestMatchers(HttpMethod.POST, "/users/login")
+                                        .permitAll().anyRequest().authenticated()).build();
 
     }
 
