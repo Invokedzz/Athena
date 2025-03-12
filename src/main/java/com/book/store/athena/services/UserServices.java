@@ -5,7 +5,6 @@ import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.stereotype.Service;
 
