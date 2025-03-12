@@ -12,10 +12,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final SecurityFilter filterChain;
+
+    public SecurityConfig(SecurityFilter filterChain) {
+
+        this.filterChain = filterChain;
+
+    }
 
     @Bean
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
@@ -25,7 +34,9 @@ public class SecurityConfig {
                         custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .authorizeHttpRequests(e ->
                                 e.requestMatchers(HttpMethod.POST, "/users/login")
-                                        .permitAll().anyRequest().authenticated()).build();
+                                        .permitAll().anyRequest().authenticated())
+                                        .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)
+                                        .build();
 
     }
 

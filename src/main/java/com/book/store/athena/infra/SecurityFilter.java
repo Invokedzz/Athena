@@ -55,7 +55,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (tokenSession != null && tokenSession.startsWith("Bearer ")) {
 
-            return tokenSession;
+            return tokenSession.replace("Bearer ", "");
 
         }
 
