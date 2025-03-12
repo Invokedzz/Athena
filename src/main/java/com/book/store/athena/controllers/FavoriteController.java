@@ -4,19 +4,22 @@ import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.dto.favorite.RequestFavoriteDto;
 import com.book.store.athena.services.FavoriteServices;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/favorites")
 public class FavoriteController {
 
-    @Autowired
-    private FavoriteServices favoriteServices;
+    private final FavoriteServices favoriteServices;
+
+    public FavoriteController(FavoriteServices favoriteServices) {
+
+        this.favoriteServices = favoriteServices;
+
+    }
 
     @Transactional
     @PostMapping("/insert") // user

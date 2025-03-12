@@ -1,15 +1,10 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.*;
-import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.User;
-import com.book.store.athena.model.repository.FavoriteRepository;
-import com.book.store.athena.services.FavoriteServices;
 import com.book.store.athena.services.UserServices;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.antlr.v4.runtime.misc.OrderedHashSet;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,9 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/users")
@@ -29,11 +22,15 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserController(UserServices userServices, AuthenticationManager authenticationManager) {
+    private final TokenAuthService tokenAuthService;
+
+    public UserController(UserServices userServices, AuthenticationManager authenticationManager, TokenAuthService tokenAuthService) {
 
         this.userServices = userServices;
 
         this.authenticationManager = authenticationManager;
+
+        this.tokenAuthService = tokenAuthService;
 
     }
 
@@ -49,18 +46,18 @@ public class UserController {
     }
 
     @PostMapping("/login") // user
-    protected ResponseEntity<Authentication> login (@RequestBody @Valid UserLoginDto userLoginDto) {
+    protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDto userLoginDto) {
 
         var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
 
         var authToken = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok(authToken);
+        return ResponseEntity.ok(tokenAuthService.generateJWToken((User) authToken.getPrincipal()));
 
     }
 
     @GetMapping("/profile/books/{id}") // user
-    protected ResponseEntity<Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
+    protected ResponseEntity <Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
 
@@ -76,15 +73,6 @@ public class UserController {
         var user = userServices.findUserById(id);
 
         if (user.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-        return ResponseEntity.ok(user);
-
-    }
-
-    @GetMapping("/{id}")
-    protected ResponseEntity <Set<FindUserBooksByIdDto>> findUserBookById (@PathVariable Long id) {
-
-        var user = userServices.findUserBooksById(id);
 
         return ResponseEntity.ok(user);
 

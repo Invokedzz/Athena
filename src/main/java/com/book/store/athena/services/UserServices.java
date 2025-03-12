@@ -2,14 +2,11 @@ package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.client.*;
-import com.book.store.athena.model.entities.Favorite;
-import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.antlr.v4.runtime.misc.OrderedHashSet;
-import org.hibernate.type.OrderedSetType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -57,20 +54,9 @@ public class UserServices {
 
     }
 
-    @Transactional
     public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
 
-        var user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-
-            var obtainedUser = user.get();
-
-            return obtainedUser.getFavoriteBooks().stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
-
-        }
-
-        return Set.of();
+        return userRepository.findFavoriteBooksByUserId(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
 
     }
 

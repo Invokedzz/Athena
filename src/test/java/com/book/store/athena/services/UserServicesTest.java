@@ -3,7 +3,7 @@ package com.book.store.athena.services;
 import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
-import com.book.store.athena.model.entities.Role;
+import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -74,21 +74,21 @@ class UserServicesTest {
     }
 
     @Test
-    void findUserById_ReturnUser () {
+    void findUserById_ReturnUserAndBooks () {
 
-        Mockito.when(userRepository.findUserById(1L))
-                .thenReturn(Set.of(new User()));
+        Mockito.when(userRepository.findFavoriteBooksByUserId(1L))
+                .thenReturn(List.of(new Books()));
 
         FindUserByIdDto user = new FindUserByIdDto(1L, "Asuka",
                                             "asuka@gmail.com", LocalDate.now());
 
         Mockito.when(userServices.findUserById(1L)).thenReturn(Set.of(user));
 
-        userRepository.findUserById(1L);
+        userRepository.findFavoriteBooksByUserId(1L);
 
         Set <FindUserByIdDto> list = userServices.findUserById(1L);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findUserById(1L);
+        Mockito.verify(userRepository, Mockito.times(1)).findFavoriteBooksByUserId(1L);
 
         Mockito.verify(userServices, Mockito.times(1)).findUserById(1L);
 

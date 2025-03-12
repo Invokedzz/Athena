@@ -1,19 +1,13 @@
 package com.book.store.athena.model.dto.client;
 
 import com.book.store.athena.model.entities.Books;
-import com.book.store.athena.model.entities.Favorite;
-import com.book.store.athena.model.entities.User;
-import org.antlr.v4.runtime.misc.OrderedHashSet;
-
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
-public record FindUserBooksByIdDto (Books books, User user) {
+public record FindUserBooksByIdDto (Set <Books> books) {
 
-    public FindUserBooksByIdDto (Favorite favorite) {
+    public FindUserBooksByIdDto(Books books) {
 
-        this (favorite.getBooks(), favorite.getUsers());
+        this(Set.of(books));
 
     }
 
