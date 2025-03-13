@@ -1,6 +1,5 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
 import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
 import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;

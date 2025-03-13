@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -39,7 +38,7 @@ public class UserController {
 
         if (!userServices.isUserAgeAbove15(registerUserDto.birthDate())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        userServices.createUser(registerUserDto);
+        userServices.create(registerUserDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
@@ -72,8 +71,6 @@ public class UserController {
 
         var user = userServices.findUserById(id);
 
-        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
         return ResponseEntity.ok(user);
 
     }
@@ -81,7 +78,7 @@ public class UserController {
     @PutMapping("/profile/update/{id}") // user
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
 
-        var user = userServices.updateUser(id, updateUserDto);
+        var user = userServices.update(id, updateUserDto);
 
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
@@ -101,7 +98,7 @@ public class UserController {
     @PutMapping("/profile/reactivate/{id}")
     protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
 
-        var user = userServices.reactivateUser(id);
+        var user = userServices.reactivate(id);
 
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
@@ -112,7 +109,7 @@ public class UserController {
     @DeleteMapping("/profile/disable/{id}")
     protected ResponseEntity <Void> disable (@PathVariable Long id) {
 
-        var user = userServices.disableUser(id);
+        var user = userServices.disable(id);
 
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
