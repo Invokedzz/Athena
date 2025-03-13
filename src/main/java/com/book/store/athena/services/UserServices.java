@@ -31,7 +31,7 @@ public class UserServices {
 
     }
 
-    public void createUser (RegisterUserDto registerUserDto) {
+    public void create (RegisterUserDto registerUserDto) {
 
         var role = roleRepository.findById(1L);
 
@@ -65,7 +65,7 @@ public class UserServices {
 
     }
 
-    public User updateUser (Long id, UpdateUserDto updateUserDto) {
+    public User update (Long id, UpdateUserDto updateUserDto) {
 
         var searchForUser = userRepository.findById(id);
 
@@ -85,7 +85,7 @@ public class UserServices {
 
     }
 
-    public User disableUser (Long id) {
+    public User disable (Long id) {
 
         var searchForUser = userRepository.findById(id);
 
@@ -105,7 +105,7 @@ public class UserServices {
 
     }
 
-    public User reactivateUser (Long id) {
+    public User reactivate (Long id) {
 
         var searchForUser = userRepository.findById(id);
 
