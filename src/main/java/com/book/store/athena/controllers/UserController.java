@@ -60,7 +60,7 @@ public class UserController {
 
         var favorites = userServices.findUserBooksById(id);
 
-        return ResponseEntity.ok(favorites);
+        return ResponseEntity.status(HttpStatus.OK).body(favorites);
 
     }
 
@@ -69,7 +69,7 @@ public class UserController {
 
         var user = userServices.findUserById(id);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
 
     }
 
@@ -87,7 +87,7 @@ public class UserController {
 
         Set <FindAllActiveUsersDto> userList = userServices.findAll(true);
 
-        return ResponseEntity.ok(userList);
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
 
     }
 
