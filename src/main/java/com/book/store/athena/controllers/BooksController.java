@@ -49,8 +49,6 @@ public class BooksController {
 
         var book = booksService.updateById(id, books);
 
-        if (book == null) return ResponseEntity.notFound().build();
-
         return ResponseEntity.ok().build();
 
     }
@@ -61,8 +59,6 @@ public class BooksController {
 
         var book = booksService.reactivateById(id);
 
-        if (book == null) return ResponseEntity.notFound().build();
-
         return ResponseEntity.noContent().build();
 
     }
@@ -72,8 +68,6 @@ public class BooksController {
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
         var book = booksService.disableById(id);
-
-        if (book == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
 

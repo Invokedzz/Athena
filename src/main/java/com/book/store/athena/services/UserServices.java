@@ -93,7 +93,7 @@ public class UserServices {
 
             var obtainedUser = searchForUser.get();
 
-            obtainedUser.disableAccount();
+            obtainedUser.disable();
 
             userRepository.save(obtainedUser);
 
@@ -113,7 +113,7 @@ public class UserServices {
 
             var obtainedUser = searchForUser.get();
 
-            obtainedUser.activateAccount();
+            obtainedUser.activate();
 
             userRepository.save(obtainedUser);
 

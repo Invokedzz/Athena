@@ -2,6 +2,7 @@ package com.book.store.athena.controllers;
 
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
+import com.book.store.athena.model.dto.admin.UpdateAdminDto;
 import com.book.store.athena.services.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -50,9 +51,29 @@ public class AdminController {
     }
 
     @PutMapping("/profile/edit/{id}")
-    protected ResponseEntity <Void> editProfile (@PathVariable Long id) {
+    protected ResponseEntity <Void> editProfile (@PathVariable Long id, @RequestBody @Valid UpdateAdminDto updateAdminDto) {
 
-        return ResponseEntity.ok().body(null);
+        adminService.update(id, updateAdminDto);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+    @PutMapping("/reactivate/{id}")
+    protected ResponseEntity <Void> reactivateAdmin (@PathVariable Long id) {
+
+        adminService.reactivate(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+    @DeleteMapping("/disable/{id}")
+    protected ResponseEntity <Void> disableAdmin (@PathVariable Long id) {
+
+        adminService.disable(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 

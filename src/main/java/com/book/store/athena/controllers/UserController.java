@@ -60,8 +60,6 @@ public class UserController {
 
         var favorites = userServices.findUserBooksById(id);
 
-        System.out.println(favorites);
-
         return ResponseEntity.ok(favorites);
 
     }
@@ -78,9 +76,7 @@ public class UserController {
     @PutMapping("/profile/update/{id}") // user
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
 
-        var user = userServices.update(id, updateUserDto);
-
-        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        userServices.update(id, updateUserDto);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -98,9 +94,7 @@ public class UserController {
     @PutMapping("/profile/reactivate/{id}")
     protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
 
-        var user = userServices.reactivate(id);
-
-        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        userServices.reactivate(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -109,9 +103,7 @@ public class UserController {
     @DeleteMapping("/profile/disable/{id}")
     protected ResponseEntity <Void> disable (@PathVariable Long id) {
 
-        var user = userServices.disable(id);
-
-        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        userServices.disable(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
