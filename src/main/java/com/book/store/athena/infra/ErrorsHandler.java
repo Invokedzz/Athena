@@ -1,6 +1,6 @@
 package com.book.store.athena.infra;
 
-import com.book.store.athena.infra.aspect.NotFoundUserException;
+import com.book.store.athena.infra.aspect.NotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorsHandler {
 
-    @ExceptionHandler({EntityNotFoundException.class, NotFoundUserException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NotFoundException.class})
     protected ResponseEntity <?> handle404 () {
 
         return ResponseEntity.notFound().build();
