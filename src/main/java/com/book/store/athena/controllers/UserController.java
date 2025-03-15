@@ -36,8 +36,6 @@ public class UserController {
     @PostMapping("/register") // user
     protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDto registerUserDto) {
 
-        if (!userServices.isUserAgeAbove15(registerUserDto.birthDate())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
         userServices.create(registerUserDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

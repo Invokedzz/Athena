@@ -1,15 +1,12 @@
 package com.book.store.athena.model.entities;
 
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
+import com.book.store.athena.model.dto.admin.UpdateAdminDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Data
@@ -44,6 +41,40 @@ public class Admin {
         this.email = registerAdminDto.email();
 
         this.password = registerAdminDto.password();
+
+    }
+
+    public void updateAdm (UpdateAdminDto updateAdminDto) {
+
+        if (updateAdminDto.email() != null) {
+
+            this.email = updateAdminDto.email();
+
+        }
+
+        if (updateAdminDto.username() != null) {
+
+            this.name = updateAdminDto.username();
+
+        }
+
+        if (updateAdminDto.password() != null) {
+
+            this.password = updateAdminDto.password();
+
+        }
+
+    }
+
+    public void activate () {
+
+        this.active = true;
+
+    }
+
+    public void disable () {
+
+        this.active = false;
 
     }
 

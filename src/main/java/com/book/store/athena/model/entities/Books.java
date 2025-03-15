@@ -72,7 +72,7 @@ public class Books {
 
     }
 
-    public void inactive () {
+    public void disable () {
 
         this.active = false;
 

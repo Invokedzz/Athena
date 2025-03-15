@@ -58,13 +58,13 @@ public class User implements UserDetails {
 
     }
 
-    public void activateAccount () {
+    public void activate () {
 
         this.active = true;
 
     }
 
-    public void disableAccount () {
+    public void disable () {
 
         this.active = false;
 

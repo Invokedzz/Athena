@@ -5,10 +5,8 @@ import com.book.store.athena.model.dto.books.FindAllBooksDto;
 import com.book.store.athena.model.dto.books.UpdateBooksDto;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
-import jakarta.persistence.SecondaryTable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ public class BooksService {
 
     }
 
-    public Books updateById (Long id, UpdateBooksDto updateBooksDto) {
+    public Books update (Long id, UpdateBooksDto updateBooksDto) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -56,7 +54,7 @@ public class BooksService {
 
     }
 
-    public Books reactivateById (Long id) {
+    public Books reactivate (Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -76,7 +74,7 @@ public class BooksService {
 
     }
 
-    public Books disableById (Long id) {
+    public Books disable (Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -84,7 +82,7 @@ public class BooksService {
 
             var bookToDelete = queriedBook.get();
 
-            bookToDelete.inactive();
+            bookToDelete.disable();
 
             booksRepository.save(bookToDelete);
 
