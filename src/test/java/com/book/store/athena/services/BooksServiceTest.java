@@ -61,7 +61,7 @@ class BooksServiceTest {
         UpdateBooksDto updateBooksDto = new UpdateBooksDto("Book Title", "Author Title",
                                                         "Lorem ipsum dolor sit amet", "text");
 
-        booksService.updateById(1L, updateBooksDto);
+        booksService.update(1L, updateBooksDto);
 
         Assertions.assertThat(updateBooksDto.name())
                     .isNotNull().isNotEmpty()
@@ -80,7 +80,7 @@ class BooksServiceTest {
                     .isEqualTo("text");
 
         Mockito.verify(booksService, Mockito.times(1))
-                    .updateById(Mockito.anyLong(), Mockito.any());
+                    .update(Mockito.anyLong(), Mockito.any());
 
     }
 

@@ -1,6 +1,7 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
+import com.book.store.athena.infra.exceptions.AgeRestrictionException;
 import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
@@ -46,6 +47,8 @@ public class UserServices {
         if (role.isPresent()) {
 
             var obtainedRole = role.get();
+
+            if (!isUserAgeAbove15(registerUserDto.birthDate())) throw new AgeRestrictionException("You must have more than 15 years to enter the website");
 
             roleRepository.insertUserRole(savedUser.getId(), obtainedRole.getId());
 
@@ -131,7 +134,7 @@ public class UserServices {
 
     }
 
-    public boolean isUserAgeAbove15 (LocalDate date) {
+    private boolean isUserAgeAbove15 (LocalDate date) {
 
         LocalDate today = LocalDate.now();
 

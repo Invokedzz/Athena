@@ -1,6 +1,7 @@
 package com.book.store.athena.infra;
 
 import com.book.store.athena.infra.aspect.NotFoundException;
+import com.book.store.athena.infra.exceptions.AgeRestrictionException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,6 +22,13 @@ public class ErrorsHandler {
     protected ResponseEntity <?> handle400 (MethodArgumentNotValidException ex) {
 
         return ResponseEntity.badRequest().body(ex.getFieldErrors().stream().map(ErrorsHandlerDto::new).toList());
+
+    }
+
+    @ExceptionHandler(AgeRestrictionException.class)
+    protected ResponseEntity <?> handleAgeBadRequest (AgeRestrictionException ex) {
+
+        return ResponseEntity.badRequest().body(ex.getMessage());
 
     }
 

@@ -47,7 +47,7 @@ public class BooksController {
     @PutMapping("/update/{id}")
     protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
 
-        var book = booksService.update(id, books);
+        booksService.update(id, books);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -57,7 +57,7 @@ public class BooksController {
     @PutMapping("/reactivate/{id}") // admin
     protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
-        var book = booksService.reactivate(id);
+        booksService.reactivate(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -67,7 +67,7 @@ public class BooksController {
     @DeleteMapping("/delete/{id}") // admin
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
-        var book = booksService.disable(id);
+        booksService.disable(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
