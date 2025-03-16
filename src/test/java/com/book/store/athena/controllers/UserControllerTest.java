@@ -73,12 +73,8 @@ class UserControllerTest {
 
         var books = userServices.findUserBooksById(userId);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String booksJson = objectMapper.writeValueAsString(books);
-
         mockMvc.perform(get("/users/profile/books/{id}", userId)
-                .content(booksJson)
+                .content(new ObjectMapper().writeValueAsString(books))
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -91,13 +87,9 @@ class UserControllerTest {
 
         var profile = userServices.findUserById(userId);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String profileJson = objectMapper.writeValueAsString(profile);
-
         mockMvc.perform(get("/users/profile/{id}", userId)
                         .contentType("application/json")
-                        .content(profileJson))
+                        .content(new ObjectMapper().writeValueAsString(profile)))
                         .andExpect(status().isOk());
 
     }
@@ -109,13 +101,9 @@ class UserControllerTest {
 
         UpdateUserDto updateUserDto = new UpdateUserDto("NorthernLight", "northern@gmail.com", "15000017");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String updateJson = objectMapper.writeValueAsString(updateUserDto);
-
         mockMvc.perform(put("/users/profile/update/{id}", userId)
                         .contentType("application/json")
-                        .content(updateJson))
+                        .content(new ObjectMapper().writeValueAsString(updateUserDto)))
                         .andExpect(status().isNoContent());
 
     }
@@ -125,15 +113,11 @@ class UserControllerTest {
 
         var activeUsers = userServices.findAll(true);
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        String activeUsersJson = mapper.writeValueAsString(activeUsers);
-
         mockMvc.perform(get("/users/actives")
                 .contentType("application/json")
-                .content(activeUsersJson))
+                .content(new ObjectMapper().writeValueAsString(activeUsers)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(activeUsers)));
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(activeUsers)));
 
     }
 
