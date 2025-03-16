@@ -55,13 +55,9 @@ class BooksControllerTest {
 
         var findAll = booksService.findAll();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String json = objectMapper.writeValueAsString(findAll);
-
         mockMvc.perform(get("/books/collection")
                 .contentType("application/json")
-                .content(json))
+                .content(new ObjectMapper().writeValueAsString(findAll)))
                 .andExpect(status().isOk());
 
     }
@@ -74,13 +70,10 @@ class BooksControllerTest {
         UpdateBooksDto updateBooksDto = new UpdateBooksDto("Book1", "Author1",
                 "Description1", "pdf");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String json = objectMapper.writeValueAsString(updateBooksDto);
-
         mockMvc.perform(put("/books/update/{id}", bookId)
-                .contentType("application/json").content(json))
-                .andExpect(status().isNoContent());
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(updateBooksDto)))
+                        .andExpect(status().isNoContent());
 
     }
 
