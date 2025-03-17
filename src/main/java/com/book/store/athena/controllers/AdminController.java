@@ -1,5 +1,6 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.admin.UpdateAdminDto;
@@ -8,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin")
@@ -24,15 +27,9 @@ public class AdminController {
     @PostMapping("/register")
     protected ResponseEntity <Void> registerAdmin (@RequestBody @Valid RegisterAdminDto registerAdminDto) {
 
-        var admin = adminService.create(registerAdminDto);
+        adminService.create(registerAdminDto);
 
-        if (admin != null) {
-
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
@@ -44,9 +41,11 @@ public class AdminController {
     }
 
     @GetMapping("/profile/{id}")
-    protected  ResponseEntity <Void> adminProfile (@PathVariable Long id) {
+    protected  ResponseEntity <Set<FindAdminByIdDto>> adminProfile (@PathVariable Long id) {
 
-        return ResponseEntity.ok().body(null);
+        var profile = adminService.findAdminById(id);
+
+        return ResponseEntity.ok().body(profile);
 
     }
 

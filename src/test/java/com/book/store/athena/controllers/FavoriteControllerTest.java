@@ -33,11 +33,7 @@ class FavoriteControllerTest {
     @Test
     void insertFavoriteRelation_Test () throws Exception {
 
-        Long userId = 1L;
-
-        Long bookId = 1L;
-
-        RequestFavoriteDto favoriteDto = new RequestFavoriteDto(userId, bookId);
+        RequestFavoriteDto favoriteDto = new RequestFavoriteDto(1L, 1L);
 
         mockMvc.perform(post("/favorites/insert")
                         .content(new ObjectMapper().writeValueAsString(favoriteDto))
@@ -61,9 +57,7 @@ class FavoriteControllerTest {
     @Test
     void favoriteReactivate_Test () throws Exception {
 
-        Long favId = 1L;
-
-        mockMvc.perform(put("/favorites/reactivate/{id}", favId)
+        mockMvc.perform(put("/favorites/reactivate/{id}", 1L)
                     .contentType("application/json"))
                     .andExpect(status().isNoContent());
 
@@ -72,9 +66,7 @@ class FavoriteControllerTest {
     @Test
     void favoriteDisable_Test () throws Exception {
 
-        Long favId = 1L;
-
-        mockMvc.perform(delete("/favorites/disable/{id}", favId)
+        mockMvc.perform(delete("/favorites/disable/{id}", 1L)
                         .contentType("application/json"))
                         .andExpect(status().isNoContent());
 

@@ -69,11 +69,9 @@ class UserControllerTest {
     @Test
     void findUserBooksById_Test () throws Exception {
 
-        Long userId = 1L;
+        var books = userServices.findUserBooksById(1L);
 
-        var books = userServices.findUserBooksById(userId);
-
-        mockMvc.perform(get("/users/profile/books/{id}", userId)
+        mockMvc.perform(get("/users/profile/books/{id}", 1L)
                 .content(new ObjectMapper().writeValueAsString(books))
                 .contentType("application/json"))
                 .andExpect(status().isOk());
@@ -83,11 +81,9 @@ class UserControllerTest {
     @Test
     void getProfileById_Test () throws Exception {
 
-        Long userId = 1L;
+        var profile = userServices.findUserById(1L);
 
-        var profile = userServices.findUserById(userId);
-
-        mockMvc.perform(get("/users/profile/{id}", userId)
+        mockMvc.perform(get("/users/profile/{id}", 1L)
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(profile)))
                         .andExpect(status().isOk());
@@ -97,11 +93,9 @@ class UserControllerTest {
     @Test
     void updateProfileById_Test () throws Exception {
 
-        Long userId = 1L;
-
         UpdateUserDto updateUserDto = new UpdateUserDto("NorthernLight", "northern@gmail.com", "15000017");
 
-        mockMvc.perform(put("/users/profile/update/{id}", userId)
+        mockMvc.perform(put("/users/profile/update/{id}", 1L)
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(updateUserDto)))
                         .andExpect(status().isNoContent());
@@ -124,9 +118,7 @@ class UserControllerTest {
     @Test
     void reactivateUser_Test () throws Exception {
 
-        Long userId = 1L;
-
-        mockMvc.perform(put("/users/profile/reactivate/{id}", userId)
+        mockMvc.perform(put("/users/profile/reactivate/{id}", 1L)
                 .contentType("application/json"))
                 .andExpect(status().isNoContent());
 
@@ -135,9 +127,7 @@ class UserControllerTest {
     @Test
     void disableUser_Test () throws Exception {
 
-        Long userId = 1L;
-
-        mockMvc.perform(delete("/users/profile/disable/{id}", userId)
+        mockMvc.perform(delete("/users/profile/disable/{id}", 1L)
                         .contentType("application/json"))
                         .andExpect(status().isNoContent());
 

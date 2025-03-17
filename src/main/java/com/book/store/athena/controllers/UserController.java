@@ -65,9 +65,9 @@ public class UserController {
     @GetMapping("/profile/{id}") // user
     protected ResponseEntity<Set<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
-        var user = userServices.findUserById(id);
+        var profile = userServices.findUserById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(profile);
 
     }
 
