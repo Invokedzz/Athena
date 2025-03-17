@@ -1,6 +1,7 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
+import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.admin.UpdateAdminDto;
 import com.book.store.athena.model.entities.Admin;
@@ -9,6 +10,7 @@ import com.book.store.athena.model.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -55,9 +57,9 @@ public class AdminService {
 
     }
 
-    public Set <Admin> profile (Long id) {
+    public Set <FindAdminByIdDto> findAdminById (Long id) {
 
-        return null;
+        return adminRepository.findAdminById(id).stream().map(FindAdminByIdDto::new).collect(Collectors.toSet());
 
     }
 

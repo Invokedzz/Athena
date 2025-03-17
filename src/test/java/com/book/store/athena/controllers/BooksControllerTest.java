@@ -65,12 +65,10 @@ class BooksControllerTest {
     @Test
     void updateBookById_Test () throws Exception {
 
-        Long bookId = 1L;
-
         UpdateBooksDto updateBooksDto = new UpdateBooksDto("Book1", "Author1",
                 "Description1", "pdf");
 
-        mockMvc.perform(put("/books/update/{id}", bookId)
+        mockMvc.perform(put("/books/update/{id}", 1L)
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(updateBooksDto)))
                         .andExpect(status().isNoContent());
@@ -80,9 +78,7 @@ class BooksControllerTest {
     @Test
     void reactivateBookById_Test () throws Exception {
 
-        Long bookId = 1L;
-
-        mockMvc.perform(put("/books/reactivate/{id}", bookId)
+        mockMvc.perform(put("/books/reactivate/{id}", 1L)
                 .contentType("application/json"))
                 .andExpect(status().isNoContent());
 
@@ -91,9 +87,7 @@ class BooksControllerTest {
     @Test
     void deleteBookById_Test () throws Exception {
 
-        Long bookId = 1L;
-
-        mockMvc.perform(delete("/books/delete/{id}", bookId)
+        mockMvc.perform(delete("/books/delete/{id}", 1L)
                 .contentType("application/json"))
                 .andExpect(status().isNoContent());
 
