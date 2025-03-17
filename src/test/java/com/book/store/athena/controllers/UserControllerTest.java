@@ -7,10 +7,13 @@ import com.book.store.athena.services.UserServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -62,7 +65,19 @@ class UserControllerTest {
     @Test
     void loginUser_Test () throws Exception {
 
+        var mockAuthentication = Mockito.mock(Authentication.class);
 
+        Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(mockAuthentication);
+
+        String mockJwtToken = "mocked-jwt-token";
+
+        Mockito.when(tokenAuthService.generateJWToken(Mockito.any())).thenReturn(mockJwtToken);
+
+        mockMvc.perform(post("/users/login")
+                        .contentType("application/json")
+                        .content("{\"username\":\"username\",\"password\":\"password\"}"))
+                        .andExpect(status().isOk());
 
     }
 
