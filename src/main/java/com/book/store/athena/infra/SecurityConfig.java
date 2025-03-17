@@ -30,11 +30,29 @@ public class SecurityConfig {
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
         return http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(custom ->
-                        custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .authorizeHttpRequests(e ->
-                                e.requestMatchers(HttpMethod.POST, "/users/login")
-                                        .permitAll().anyRequest().authenticated())
+                                        .sessionManagement(custom ->
+
+                                                custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                                        .authorizeHttpRequests(e ->
+                                        e.requestMatchers(HttpMethod.POST, "/users/register").permitAll())
+
+                                        .authorizeHttpRequests(e ->
+                                        e.requestMatchers(HttpMethod.POST, "/users/login").permitAll())
+
+                                        .authorizeHttpRequests(e ->
+                                                e.requestMatchers("/users/profile/{id}",
+                                                        "/users/profile/books/{id}", "/users/profile/disable/{id}",
+                                                                "/books/create", "/users/profile/reactivate/{id}",
+                                                        "/books/collection", "/favorites/insert").hasRole("USER"))
+
+                                        .authorizeHttpRequests(e ->
+                                        e.requestMatchers(HttpMethod.POST, "/admin/login").permitAll())
+                                        .authorizeHttpRequests(req ->
+                                                req.requestMatchers("/admin/**",
+                                                        "/users/actives", "/books/delete/{id}",
+                                                        "/books/reactivate/{id}", "/favorites/display").hasRole("ADMIN"))
+
                                         .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)
                                         .build();
 
