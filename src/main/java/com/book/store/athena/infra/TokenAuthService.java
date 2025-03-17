@@ -6,9 +6,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.book.store.athena.model.entities.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class TokenAuthService {
@@ -18,6 +20,9 @@ public class TokenAuthService {
 
     public String generateJWToken (User user) {
 
+        List <String> roles = user.getAuthorities()
+                        .stream().map(GrantedAuthority::getAuthority).toList();
+
         try {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -25,6 +30,7 @@ public class TokenAuthService {
             return JWT.create()
                     .withIssuer("athena_library")
                     .withSubject(user.getUsername())
+                    .withClaim("USER", roles)
                     .withExpiresAt(expireTokenDate())
                     .sign(algorithm);
 

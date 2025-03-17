@@ -1,13 +1,19 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.admin.UpdateAdminDto;
+import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.AdminService;
+import com.book.store.athena.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -18,9 +24,17 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
+    private final AuthenticationManager authenticationManager;
+
+    private final TokenAuthService tokenAuthService;
+
+    public AdminController(AdminService adminService, AuthenticationManager authenticationManager, TokenAuthService tokenAuthService, AuthService authService) {
 
         this.adminService = adminService;
+
+        this.authenticationManager = authenticationManager;
+
+        this.tokenAuthService = tokenAuthService;
 
     }
 
@@ -35,6 +49,10 @@ public class AdminController {
 
     @PostMapping("/login")
     protected ResponseEntity <Void> loginAdmin (@RequestBody @Valid LoginAdminDto loginAdminDto) {
+
+        var token = new UsernamePasswordAuthenticationToken(loginAdminDto.email(), loginAdminDto.password());
+
+        var authentication = authenticationManager.authenticate(token);
 
         return ResponseEntity.ok().body(null);
 

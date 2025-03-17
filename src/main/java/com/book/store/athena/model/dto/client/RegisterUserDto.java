@@ -20,6 +20,7 @@ public record RegisterUserDto (
         @Length(min = 6, max = 50, message = "password input length must be between 6 to 50 characters")
         String password,
 
+        @NotBlank
         @Past(message = "please, enter a valid birth date!")
         LocalDate birthDate
 
