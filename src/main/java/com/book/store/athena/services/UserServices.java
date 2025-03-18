@@ -50,7 +50,7 @@ public class UserServices {
 
             if (!isUserAgeAbove15(registerUserDto.birthDate())) throw new AgeRestrictionException("You must have more than 15 years to enter the website");
 
-            roleRepository.insertUserRole(savedUser.getId(), obtainedRole.getId());
+            roleRepository.insertRole(savedUser.getId(), obtainedRole.getId());
 
         }
 

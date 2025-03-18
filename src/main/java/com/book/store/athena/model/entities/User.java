@@ -1,5 +1,6 @@
 package com.book.store.athena.model.entities;
 
+import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.client.RegisterUserDto;
 import com.book.store.athena.model.dto.client.UpdateUserDto;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -58,6 +60,20 @@ public class User implements UserDetails {
 
     }
 
+    public User (RegisterAdminDto registerAdminDto) {
+
+        this.active = true;
+
+        this.name = registerAdminDto.username();
+
+        this.email = registerAdminDto.email();
+
+        this.password = registerAdminDto.password();
+
+        this.birthDate = registerAdminDto.birthDate();
+
+    }
+
     public void activate () {
 
         this.active = true;
@@ -95,7 +111,9 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return Set.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return roles.stream().map(role ->
+                new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
 
     }
 

@@ -4,16 +4,14 @@ import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.admin.UpdateAdminDto;
+import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.AdminService;
-import com.book.store.athena.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -28,7 +26,7 @@ public class AdminController {
 
     private final TokenAuthService tokenAuthService;
 
-    public AdminController(AdminService adminService, AuthenticationManager authenticationManager, TokenAuthService tokenAuthService, AuthService authService) {
+    public AdminController(AdminService adminService, AuthenticationManager authenticationManager, TokenAuthService tokenAuthService) {
 
         this.adminService = adminService;
 
@@ -48,13 +46,13 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    protected ResponseEntity <Void> loginAdmin (@RequestBody @Valid LoginAdminDto loginAdminDto) {
+    protected ResponseEntity <String> loginAdmin (@RequestBody @Valid LoginAdminDto loginAdminDto) {
 
-        var token = new UsernamePasswordAuthenticationToken(loginAdminDto.email(), loginAdminDto.password());
+        var token = new UsernamePasswordAuthenticationToken(loginAdminDto.username(), loginAdminDto.password());
 
         var authentication = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok(tokenAuthService.generateUserJWToken((User)authentication.getPrincipal()));
 
     }
 
@@ -68,9 +66,9 @@ public class AdminController {
     }
 
     @PutMapping("/profile/edit/{id}")
-    protected ResponseEntity <Void> editProfile (@PathVariable Long id, @RequestBody @Valid UpdateAdminDto updateAdminDto) {
+    protected ResponseEntity <Void> editProfile (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
 
-        adminService.update(id, updateAdminDto);
+        adminService.update(id, updateUserDto);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
