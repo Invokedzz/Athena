@@ -18,7 +18,7 @@ public class TokenAuthService {
     @Value("spring.security.oauth2.client.registration")
     private String secret;
 
-    public String generateJWToken (User user) {
+    public String generateUserJWToken(User user) {
 
         List <String> roles = user.getAuthorities()
                         .stream().map(GrantedAuthority::getAuthority).toList();

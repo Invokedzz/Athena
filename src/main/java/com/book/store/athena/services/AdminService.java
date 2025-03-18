@@ -3,27 +3,26 @@ package com.book.store.athena.services;
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.admin.UpdateAdminDto;
-import com.book.store.athena.model.entities.Admin;
-import com.book.store.athena.model.repository.AdminRepository;
+import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
+import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
 
-    private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
 
     private final SecurityConfig securityConfig;
 
-    public AdminService (AdminRepository adminRepository, RoleRepository roleRepository,SecurityConfig securityConfig) {
+    public AdminService (UserRepository userRepository, RoleRepository roleRepository,SecurityConfig securityConfig) {
 
-        this.adminRepository = adminRepository;
+        this.userRepository = userRepository;
 
         this.roleRepository = roleRepository;
 
@@ -31,23 +30,23 @@ public class AdminService {
 
     }
 
-    public Admin create (RegisterAdminDto registerAdminDto) {
+    public User create (RegisterAdminDto registerAdminDto) {
 
         var role = roleRepository.findById(2L);
 
-        Admin admin = new Admin(registerAdminDto);
+        User admin = new User(registerAdminDto);
 
         String adminPassword = securityConfig.passwordEncoder().encode(admin.getPassword());
 
         admin.setPassword(adminPassword);
 
-        var createdAdmin = adminRepository.save(admin);
+        var createdAdmin = userRepository.save(admin);
 
         if (role.isPresent()) {
 
             var obtainedRole = role.get();
 
-            roleRepository.insertAdminRole(createdAdmin.getId(), obtainedRole.getId());
+            roleRepository.insertRole(createdAdmin.getId(), obtainedRole.getId());
 
             return admin;
 
@@ -59,21 +58,21 @@ public class AdminService {
 
     public Set <FindAdminByIdDto> findAdminById (Long id) {
 
-        return adminRepository.findAdminById(id).stream().map(FindAdminByIdDto::new).collect(Collectors.toSet());
+        return null;
 
     }
 
-    public Admin update (Long id, UpdateAdminDto updateAdminDto) {
+    public User update (Long id, UpdateUserDto updateUserDto) {
 
-        var adm = adminRepository.findById(id);
+        var adm = userRepository.findById(id);
 
         if (adm.isPresent()) {
 
             var obtainedAdm = adm.get();
 
-            obtainedAdm.updateAdm(updateAdminDto);
+            obtainedAdm.update(updateUserDto);
 
-            adminRepository.save(obtainedAdm);
+            userRepository.save(obtainedAdm);
 
             return obtainedAdm;
 
@@ -83,9 +82,9 @@ public class AdminService {
 
     }
 
-    public Admin disable (Long id) {
+    public User disable (Long id) {
 
-        var adm = adminRepository.findById(id);
+        var adm = userRepository.findById(id);
 
         if (adm.isPresent()) {
 
@@ -93,7 +92,7 @@ public class AdminService {
 
             obtainedAdm.disable();
 
-            adminRepository.save(obtainedAdm);
+            userRepository.save(obtainedAdm);
 
             return obtainedAdm;
 
@@ -103,9 +102,9 @@ public class AdminService {
 
     }
 
-    public Admin reactivate (Long id) {
+    public User reactivate (Long id) {
 
-        var adm = adminRepository.findById(id);
+        var adm = userRepository.findById(id);
 
         if (adm.isPresent()) {
 
@@ -113,7 +112,7 @@ public class AdminService {
 
             obtainedAdm.activate();
 
-            adminRepository.save(obtainedAdm);
+            userRepository.save(obtainedAdm);
 
             return obtainedAdm;
 

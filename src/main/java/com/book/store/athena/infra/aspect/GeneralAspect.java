@@ -1,6 +1,5 @@
 package com.book.store.athena.infra.aspect;
 
-import com.book.store.athena.model.dto.admin.UpdateAdminDto;
 import com.book.store.athena.model.dto.books.UpdateBooksDto;
 import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.services.AdminService;
@@ -69,7 +68,7 @@ public class GeneralAspect {
 
     @Before(value = "execution(* com.book.store.athena.controllers.AdminController.*(..)) &&" +
             " args (id, updateAdminDto)", argNames = "id, updateAdminDto")
-    public void invalidAdminUpdate (Long id, UpdateAdminDto updateAdminDto) {
+    public void invalidAdminUpdate (Long id, UpdateUserDto updateAdminDto) {
 
         validateServiceExistence(() -> adminService.update(id, updateAdminDto));
 

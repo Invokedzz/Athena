@@ -72,7 +72,7 @@ class UserControllerTest {
 
         String mockJwtToken = "mocked-jwt-token";
 
-        Mockito.when(tokenAuthService.generateJWToken(Mockito.any())).thenReturn(mockJwtToken);
+        Mockito.when(tokenAuthService.generateUserJWToken(Mockito.any())).thenReturn(mockJwtToken);
 
         mockMvc.perform(post("/users/login")
                         .contentType("application/json")

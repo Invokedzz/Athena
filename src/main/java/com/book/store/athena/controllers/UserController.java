@@ -49,7 +49,7 @@ public class UserController {
 
         var authToken = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok(tokenAuthService.generateJWToken((User) authToken.getPrincipal()));
+        return ResponseEntity.ok(tokenAuthService.generateUserJWToken((User)authToken.getPrincipal()));
 
     }
 

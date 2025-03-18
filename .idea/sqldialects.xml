@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V6__create-table-user_roles.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V7__create-table-admins.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V8__create-table-admin_roles.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V9__create-table-admin_roles.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/v3__create-table-users.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/v4__create-table-favorites.sql" dialect="PostgreSQL" />
   </component>

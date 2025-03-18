@@ -1,9 +1,9 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.admin.UpdateAdminDto;
-import com.book.store.athena.model.entities.Admin;
-import com.book.store.athena.model.repository.AdminRepository;
+import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.entities.User;
+import com.book.store.athena.model.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -20,20 +22,21 @@ class AdminServiceTest {
     private AdminService adminService;
 
     @MockitoBean
-    private AdminRepository adminRepository;
+    private UserRepository userRepository;
 
     @Test
     void registerAdmin_ThenReturnIt () {
 
-        RegisterAdminDto registerAdminDto = new RegisterAdminDto("Picasso", "Picasso@gmail.com", "pic123");
+        RegisterAdminDto registerAdminDto = new RegisterAdminDto("Picasso", "Picasso@gmail.com",
+                "pic123", LocalDate.parse("1999-10-02"));
 
-        Admin admin = new Admin(registerAdminDto);
+        User admin = new User(registerAdminDto);
 
         Mockito.when(adminService.create(Mockito.any(RegisterAdminDto.class))).thenReturn(admin);
 
         adminService.create(registerAdminDto);
 
-        Assertions.assertThat(adminRepository.findById(admin.getId())).isNotNull();
+        Assertions.assertThat(userRepository.findById(admin.getId())).isNotNull();
 
         Assertions.assertThat(registerAdminDto.username())
                         .isEqualTo("Picasso")
@@ -54,9 +57,9 @@ class AdminServiceTest {
     @Test
     void updateAdmin_ThenReturnIt () {
 
-        UpdateAdminDto updateAdminDto = new UpdateAdminDto("hayden@gmail.com", "Hayden Jast", "123456");
+        UpdateUserDto updateAdminDto = new UpdateUserDto("Hayden Jast", "hayden@gmail.com", "123456");
 
-        Mockito.when(adminService.update(Mockito.eq(1L), Mockito.eq(updateAdminDto))).thenReturn(new Admin());
+        Mockito.when(adminService.update(Mockito.eq(1L), Mockito.eq(updateAdminDto))).thenReturn(new User());
 
         adminService.update(1L, updateAdminDto);
 
@@ -79,7 +82,7 @@ class AdminServiceTest {
     @Test
     void reactivateAdmin_ThenReturnIt () {
 
-        Mockito.when(adminService.reactivate(Mockito.any())).thenReturn(new Admin());
+        Mockito.when(adminService.reactivate(Mockito.any())).thenReturn(new User());
 
         adminService.reactivate(Mockito.any());
 
@@ -90,7 +93,7 @@ class AdminServiceTest {
     @Test
     void disableAdmin_ThenReturnIt () {
 
-        Mockito.when(adminService.disable(Mockito.any())).thenReturn(new Admin());
+        Mockito.when(adminService.disable(Mockito.any())).thenReturn(new User());
 
         adminService.disable(Mockito.any());
 
