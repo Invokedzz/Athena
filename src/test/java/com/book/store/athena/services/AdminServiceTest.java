@@ -1,7 +1,6 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -51,53 +50,6 @@ class AdminServiceTest {
                         .isNotNull();
 
         Mockito.verify(adminService, Mockito.times(1)).create(Mockito.any(RegisterAdminDto.class));
-
-    }
-
-    @Test
-    void updateAdmin_ThenReturnIt () {
-
-        UpdateUserDto updateAdminDto = new UpdateUserDto("Hayden Jast", "hayden@gmail.com", "123456");
-
-        Mockito.when(adminService.update(Mockito.eq(1L), Mockito.eq(updateAdminDto))).thenReturn(new User());
-
-        adminService.update(1L, updateAdminDto);
-
-        Assertions.assertThat(updateAdminDto.username())
-                        .isEqualTo("Hayden Jast")
-                        .isNotNull();
-
-        Assertions.assertThat(updateAdminDto.email())
-                        .isEqualTo("hayden@gmail.com")
-                        .isNotNull();
-
-        Assertions.assertThat(updateAdminDto.password())
-                        .isEqualTo("123456")
-                        .isNotNull();
-
-        Mockito.verify(adminService, Mockito.times(1)).update(Mockito.eq(1L), Mockito.eq(updateAdminDto));
-
-    }
-
-    @Test
-    void reactivateAdmin_ThenReturnIt () {
-
-        Mockito.when(adminService.reactivate(Mockito.any())).thenReturn(new User());
-
-        adminService.reactivate(Mockito.any());
-
-        Mockito.verify(adminService, Mockito.times(1)).reactivate(Mockito.any());
-
-    }
-
-    @Test
-    void disableAdmin_ThenReturnIt () {
-
-        Mockito.when(adminService.disable(Mockito.any())).thenReturn(new User());
-
-        adminService.disable(Mockito.any());
-
-        Mockito.verify(adminService, Mockito.times(1)).disable(Mockito.any());
 
     }
 

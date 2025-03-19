@@ -34,13 +34,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(e -> e
                         .requestMatchers(HttpMethod.POST, "/users/register", "/users/login").permitAll()
                         .requestMatchers("/users/profile/{id}", "/users/profile/books/{id}", "/users/profile/disable/{id}",
-                                "/books/create", "/users/profile/reactivate/{id}", "/books/collection", "/favorites/insert")
+                                "/books/create", "/users/profile/reactivate/{id}", "/favorites/insert")
                         .hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/admin/register", "/admin/login").permitAll()
-                        .requestMatchers("/admin/profile/{id}", "/admin/profile/disable/{id}", "/users/actives",
+                        .requestMatchers(HttpMethod.GET, "/books/collection").permitAll()
+                        .requestMatchers("/admin/profile/{id}", "/users/actives",
                                 "/books/delete/{id}", "/books/reactivate/{id}", "/favorites/display",
-                                "/admin/reactivate/{id}")
-                        .hasRole("ADMIN")
+                                "/admin/profile/edit/{id}").hasRole("ADMIN").anyRequest().authenticated()
                 )
 
                 .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)

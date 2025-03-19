@@ -24,17 +24,13 @@ public class GeneralAspect {
 
     private final BooksService booksService;
 
-    private final AdminService adminService;
-
-    public GeneralAspect(FavoriteServices favoriteServices, UserServices userServices, BooksService booksService, AdminService adminService) {
+    public GeneralAspect(FavoriteServices favoriteServices, UserServices userServices, BooksService booksService) {
 
         this.favoriteServices = favoriteServices;
 
         this.userServices = userServices;
 
         this.booksService = booksService;
-
-        this.adminService = adminService;
 
     }
 
@@ -66,14 +62,6 @@ public class GeneralAspect {
 
     }
 
-    @Before(value = "execution(* com.book.store.athena.controllers.AdminController.*(..)) &&" +
-            " args (id, updateAdminDto)", argNames = "id, updateAdminDto")
-    public void invalidAdminUpdate (Long id, UpdateUserDto updateAdminDto) {
-
-        validateServiceExistence(() -> adminService.update(id, updateAdminDto));
-
-    }
-
     @Before(value = "execution(* com.book.store.athena.controllers.*.*(..)) && args (id, ..)")
     public void invalidDisable (Long id) {
 
@@ -83,9 +71,7 @@ public class GeneralAspect {
 
                 () -> userServices.disable(id),
 
-                () -> favoriteServices.disable(id),
-
-                () -> adminService.disable(id)
+                () -> favoriteServices.disable(id)
 
         );
 
@@ -106,9 +92,7 @@ public class GeneralAspect {
 
                 () -> userServices.reactivate(id),
 
-                () -> favoriteServices.reactivate(id),
-
-                () -> adminService.reactivate(id)
+                () -> favoriteServices.reactivate(id)
 
         );
 

@@ -3,6 +3,7 @@ package com.book.store.athena.infra;
 import com.book.store.athena.infra.aspect.NotFoundException;
 import com.book.store.athena.infra.exceptions.AgeRestrictionException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,9 +27,9 @@ public class ErrorsHandler {
     }
 
     @ExceptionHandler(AgeRestrictionException.class)
-    protected ResponseEntity <?> handleAgeBadRequest (AgeRestrictionException ex) {
+    protected ResponseEntity <?> handle403 (AgeRestrictionException ex) {
 
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
 
     }
 

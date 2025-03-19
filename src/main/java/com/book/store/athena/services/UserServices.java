@@ -32,7 +32,7 @@ public class UserServices {
 
     }
 
-    public void create (RegisterUserDto registerUserDto) {
+    public void create (RegisterUserDto registerUserDto) throws AgeRestrictionException {
 
         var role = roleRepository.findById(1L);
 
@@ -42,13 +42,13 @@ public class UserServices {
 
         user.setPassword(userPassword);
 
-        var savedUser = userRepository.save(user);
-
         if (role.isPresent()) {
 
             var obtainedRole = role.get();
 
             if (!isUserAgeAbove15(registerUserDto.birthDate())) throw new AgeRestrictionException("You must have more than 15 years to enter the website");
+
+            var savedUser = userRepository.save(user);
 
             roleRepository.insertRole(savedUser.getId(), obtainedRole.getId());
 
@@ -140,7 +140,12 @@ public class UserServices {
 
         int userAge = today.getYear() - date.getYear();
 
-        if (today.getMonthValue() < date.getMonthValue() || today.getMonthValue() == date.getMonthValue()) userAge--;
+        if (today.getMonthValue() < date.getMonthValue() ||
+                (today.getMonthValue() == date.getMonthValue() && today.getDayOfMonth() < date.getDayOfMonth())) {
+
+            userAge--;
+
+        }
 
         return userAge >= 16;
 
