@@ -4,7 +4,6 @@ import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.AdminService;
 import jakarta.validation.Valid;
@@ -62,33 +61,6 @@ public class AdminController {
         var profile = adminService.findAdminById(id);
 
         return ResponseEntity.ok().body(profile);
-
-    }
-
-    @PutMapping("/profile/edit/{id}")
-    protected ResponseEntity <Void> editProfile (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
-
-        adminService.update(id, updateUserDto);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-    }
-
-    @PutMapping("/reactivate/{id}")
-    protected ResponseEntity <Void> reactivateAdmin (@PathVariable Long id) {
-
-        adminService.reactivate(id);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-    }
-
-    @DeleteMapping("/disable/{id}")
-    protected ResponseEntity <Void> disableAdmin (@PathVariable Long id) {
-
-        adminService.disable(id);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 

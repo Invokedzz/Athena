@@ -4,6 +4,7 @@ import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.entities.Role;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
@@ -57,66 +58,6 @@ public class AdminService {
     }
 
     public Set <FindAdminByIdDto> findAdminById (Long id) {
-
-        return null;
-
-    }
-
-    public User update (Long id, UpdateUserDto updateUserDto) {
-
-        var adm = userRepository.findById(id);
-
-        if (adm.isPresent()) {
-
-            var obtainedAdm = adm.get();
-
-            obtainedAdm.update(updateUserDto);
-
-            userRepository.save(obtainedAdm);
-
-            return obtainedAdm;
-
-        }
-
-        return null;
-
-    }
-
-    public User disable (Long id) {
-
-        var adm = userRepository.findById(id);
-
-        if (adm.isPresent()) {
-
-            var obtainedAdm = adm.get();
-
-            obtainedAdm.disable();
-
-            userRepository.save(obtainedAdm);
-
-            return obtainedAdm;
-
-        }
-
-        return null;
-
-    }
-
-    public User reactivate (Long id) {
-
-        var adm = userRepository.findById(id);
-
-        if (adm.isPresent()) {
-
-            var obtainedAdm = adm.get();
-
-            obtainedAdm.activate();
-
-            userRepository.save(obtainedAdm);
-
-            return obtainedAdm;
-
-        }
 
         return null;
 
