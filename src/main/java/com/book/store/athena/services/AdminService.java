@@ -3,14 +3,14 @@ package com.book.store.athena.services;
 import com.book.store.athena.infra.SecurityConfig;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
-import com.book.store.athena.model.entities.Role;
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -60,6 +60,13 @@ public class AdminService {
     public Set <FindAdminByIdDto> findAdminById (Long id) {
 
         return null;
+
+    }
+
+    public Set <FindAllActiveUsersDto> findAll () {
+
+        return userRepository.findAllUsersByActive(true, "ROLE_ADMIN")
+                .stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
 
     }
 
