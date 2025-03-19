@@ -118,13 +118,13 @@ class UserControllerTest {
     }
 
     @Test
-    void getActiveUsers_Test () throws Exception {
+    void findAllActiveUsers_Test () throws Exception {
 
-        var activeUsers = userServices.findAll(true);
+        var activeUsers = userServices.findAll();
 
-        mockMvc.perform(get("/users/actives")
-                .contentType("application/json")
-                .content(new ObjectMapper().writeValueAsString(activeUsers)))
+        mockMvc.perform(get("/users/all")
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(activeUsers)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(activeUsers)));
 

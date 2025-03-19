@@ -4,6 +4,7 @@ import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.LoginAdminDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.AdminService;
 import jakarta.validation.Valid;
@@ -51,7 +52,17 @@ public class AdminController {
 
         var authentication = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok(tokenAuthService.generateUserJWToken((User)authentication.getPrincipal()));
+        return ResponseEntity.status(HttpStatus.OK).
+                body(tokenAuthService.generateUserJWToken((User)authentication.getPrincipal()));
+
+    }
+
+    @GetMapping("/all")
+    protected  ResponseEntity <Set<FindAllActiveUsersDto>> findAllAdmins() {
+
+        var admins = adminService.findAll();
+
+        return ResponseEntity.status(HttpStatus.OK).body(admins);
 
     }
 
@@ -60,7 +71,7 @@ public class AdminController {
 
         var profile = adminService.findAdminById(id);
 
-        return ResponseEntity.ok().body(profile);
+        return ResponseEntity.status(HttpStatus.OK).body(profile);
 
     }
 

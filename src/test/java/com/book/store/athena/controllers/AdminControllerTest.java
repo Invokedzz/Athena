@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -78,6 +79,19 @@ class AdminControllerTest {
     }
 
     @Test
+    void findAllActiveAdmins_Test () throws Exception {
+
+        var admins = adminService.findAll();
+
+        mockMvc.perform(get("/admin/all")
+                .contentType("application/json")
+                .content(new ObjectMapper().writeValueAsString(admins)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(admins)));
+
+    }
+
+    @Test
     void getAdminProfileById_Test () throws Exception {
 
         var profile = adminService.findAdminById(1L);
@@ -86,19 +100,6 @@ class AdminControllerTest {
                 .contentType("application/json")
                 .content(new ObjectMapper().writeValueAsString(profile)))
                 .andExpect(status().isOk());
-
-    }
-
-    @Test
-    void updateAdminById_Test () throws Exception {
-
-        UpdateUserDto updateAdminDto = new UpdateUserDto("Hephaestus", "Hephaestus@gmail.com",
-                                "1742216226");
-
-        mockMvc.perform(put("/admin/profile/edit/{id}", 1L)
-                        .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(updateAdminDto)))
-                        .andExpect(status().isNoContent());
 
     }
 

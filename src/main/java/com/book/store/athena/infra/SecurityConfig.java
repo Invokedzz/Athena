@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/books/collection").permitAll()
                         .requestMatchers("/admin/profile/{id}", "/users/actives",
                                 "/books/delete/{id}", "/books/reactivate/{id}", "/favorites/display",
-                                "/admin/profile/edit/{id}").hasRole("ADMIN").anyRequest().authenticated()
+                                "/admin/profile/edit/{id}", "/admin/all", "/users/all").hasRole("ADMIN").anyRequest().authenticated()
                 )
 
                 .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)

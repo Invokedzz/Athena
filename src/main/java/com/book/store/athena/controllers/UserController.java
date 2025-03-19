@@ -80,12 +80,12 @@ public class UserController {
 
     }
 
-    @GetMapping("/actives") // admin
+    @GetMapping("/all") // admin
     protected ResponseEntity <Set<FindAllActiveUsersDto>> findAllUsers () {
 
-        Set <FindAllActiveUsersDto> userList = userServices.findAll(true);
+        var users = userServices.findAll();
 
-        return ResponseEntity.status(HttpStatus.OK).body(userList);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
 
     }
 

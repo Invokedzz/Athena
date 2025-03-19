@@ -128,9 +128,10 @@ public class UserServices {
 
     }
 
-    public Set <FindAllActiveUsersDto> findAll (Boolean active) {
+    public Set <FindAllActiveUsersDto> findAll () {
 
-        return userRepository.findAllByActive(active).stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
+        return userRepository.findAllUsersByActive(true, "ROLE_USER")
+                .stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
 
     }
 

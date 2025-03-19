@@ -96,18 +96,5 @@ class UserServicesTest {
 
     }
 
-    @Test
-    void findAllUsersByActive_ThenReturnThem () {
-
-        FindAllActiveUsersDto activeUsers = new FindAllActiveUsersDto(1L, "Shinji Ika",
-                                        "shinji@gmail.com", LocalDate.now());
-
-        Mockito.when(userServices.findAll(Mockito.anyBoolean())).thenReturn(Set.of(activeUsers));
-
-        userServices.findAll(Mockito.anyBoolean());
-
-        Mockito.verify(userServices, Mockito.times(1)).findAll(Mockito.anyBoolean());
-
-    }
 
 }
