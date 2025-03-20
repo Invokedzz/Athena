@@ -1,6 +1,5 @@
 package com.book.store.athena.model.repository;
 
-import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.User;
 import jakarta.transaction.Transactional;
@@ -12,14 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository <User, Long> {
-
-    @Transactional
-    @Query("SELECT f.books FROM Favorite f WHERE f.users.id = :userId AND f.active = true")
-    List<Books> findFavoriteBooksByUserId (@Param("userId") Long userId);
 
     UserDetails findUserByName (String name);
 

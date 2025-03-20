@@ -1,12 +1,15 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
+import com.book.store.athena.exceptions.BadRequestException;
+import com.book.store.athena.exceptions.NotFoundException;
+import com.book.store.athena.model.dto.favorite.FindAllFavoritesDTO;
 import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;
 import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,14 +33,14 @@ public class FavoriteServices {
 
     }
 
-    public Set <FindAllFavoritesDto> findFavoriteByActive (Boolean active) {
+    public Set <FindAllFavoritesDTO> findFavoriteByActive (Boolean active) {
 
         return favoriteRepository.findAllByActive(active).stream()
-                .map(FindAllFavoritesDto::new).collect(Collectors.toSet());
+                .map(FindAllFavoritesDTO::new).collect(Collectors.toSet());
 
     }
 
-    public Favorite save (Long userId, Long bookId) {
+    public void create (Long userId, Long bookId) {
 
         var user = userRepository.findById(userId);
 
@@ -49,15 +52,13 @@ public class FavoriteServices {
 
             favoriteRepository.save(favorite);
 
-            return favorite;
-
         }
 
-        return null;
+        verifyIfUserAndBookExists(user, book);
 
     }
 
-    public Favorite reactivate (Long id) {
+    public void reactivate (Long id) {
 
         var favorite = favoriteRepository.findById(id);
 
@@ -69,15 +70,13 @@ public class FavoriteServices {
 
             favoriteRepository.save(obtainedFav);
 
-            return obtainedFav;
-
         }
 
-        return null;
+        verifyIfFavoriteRelationExists(favorite);
 
     }
 
-    public Favorite disable (Long id) {
+    public void disable (Long id) {
 
         var favorite = favoriteRepository.findById(id);
 
@@ -89,11 +88,29 @@ public class FavoriteServices {
 
             favoriteRepository.save(obtainedFav);
 
-            return obtainedFav;
+        }
+
+        verifyIfFavoriteRelationExists(favorite);
+
+    }
+
+    private void verifyIfFavoriteRelationExists (Optional <?> favorite) {
+
+        if (favorite.isEmpty()) {
+
+            throw new NotFoundException("Favorite relation does not exist");
 
         }
 
-        return null;
+    }
+
+    private void verifyIfUserAndBookExists (Optional <?> user, Optional <?> book) {
+
+        if (user.isEmpty() || book.isEmpty()) {
+
+            throw new BadRequestException("Unable to process request");
+
+        }
 
     }
 

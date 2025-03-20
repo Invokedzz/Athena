@@ -1,12 +1,15 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.books.CreateBooksDto;
-import com.book.store.athena.model.dto.books.FindAllBooksDto;
-import com.book.store.athena.model.dto.books.UpdateBooksDto;
+import com.book.store.athena.exceptions.NotFoundException;
+import com.book.store.athena.model.dto.books.CreateBooksDTO;
+import com.book.store.athena.model.dto.books.FindAllBooksDTO;
+import com.book.store.athena.model.dto.books.UpdateBooksDTO;
+import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,20 +24,32 @@ public class BooksService {
 
     }
 
-    public void registerBook (CreateBooksDto createBooksDto) {
+    public void create(CreateBooksDTO createBooksDto) {
 
         booksRepository.save(new Books(createBooksDto));
 
     }
 
-    public Set< FindAllBooksDto> findAll () {
+    public Set<FindAllBooksDTO> findAll () {
 
         return booksRepository.findAllByActive(true).stream()
-                .map(FindAllBooksDto::new).collect(Collectors.toSet());
+                .map(FindAllBooksDTO::new).collect(Collectors.toSet());
 
     }
 
-    public Books update (Long id, UpdateBooksDto updateBooksDto) {
+    public Set <FindUserBooksByIdDTO> findUserBooksById (Long userId) {
+
+        Set <FindUserBooksByIdDTO> books =  booksRepository.findFavoriteBooksByUserId(userId)
+                .stream().map(FindUserBooksByIdDTO::new)
+                .collect(Collectors.toSet());
+
+         verifyIfBookCollectionExists(books);
+
+        return books;
+
+    }
+
+    public void update (Long id, UpdateBooksDTO updateBooksDto) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -46,15 +61,13 @@ public class BooksService {
 
             booksRepository.save(bookToUpdate);
 
-            return bookToUpdate;
-
         }
 
-        return null;
+        verifyIfBookExists(queriedBook);
 
     }
 
-    public Books reactivate (Long id) {
+    public void reactivate (Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -66,15 +79,13 @@ public class BooksService {
 
             booksRepository.save(bookAboutToUpdate);
 
-            return bookAboutToUpdate;
-
         }
 
-        return null;
+        verifyIfBookExists(queriedBook);
 
     }
 
-    public Books disable (Long id) {
+    public void disable (Long id) {
 
         var queriedBook = booksRepository.findById(id);
 
@@ -86,11 +97,29 @@ public class BooksService {
 
             booksRepository.save(bookToDelete);
 
-            return bookToDelete;
+        }
+
+        verifyIfBookExists(queriedBook);
+
+    }
+
+    private void verifyIfBookCollectionExists (Set <FindUserBooksByIdDTO> books) {
+
+        if (books.isEmpty()) {
+
+            throw new NotFoundException("Book collection not found");
 
         }
 
-        return null;
+    }
+
+    private void verifyIfBookExists (Optional <?> book) {
+
+        if (book.isEmpty()) {
+
+            throw new NotFoundException("Book not found");
+
+        }
 
     }
 

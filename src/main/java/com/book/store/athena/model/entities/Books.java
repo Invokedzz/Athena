@@ -1,8 +1,7 @@
 package com.book.store.athena.model.entities;
 
-import com.book.store.athena.model.dto.books.CreateBooksDto;
-import com.book.store.athena.model.dto.books.UpdateBooksDto;
-import com.book.store.athena.model.dto.client.FindUserBooksByIdDto;
+import com.book.store.athena.model.dto.books.CreateBooksDTO;
+import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import jakarta.persistence.*;
@@ -46,7 +45,7 @@ public class Books {
 
     private Boolean active;
 
-    public Books (CreateBooksDto booksDto) {
+    public Books (CreateBooksDTO booksDto) {
 
         this.active = true;
 
@@ -78,7 +77,7 @@ public class Books {
 
     }
 
-    public void updateBooks (@Valid UpdateBooksDto booksDto) {
+    public void updateBooks (@Valid UpdateBooksDTO booksDto) {
 
         if (booksDto.name() != null) {
 

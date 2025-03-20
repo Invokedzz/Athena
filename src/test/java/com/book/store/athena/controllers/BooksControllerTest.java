@@ -1,6 +1,6 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.books.UpdateBooksDto;
+import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.services.BooksService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ class BooksControllerTest {
     @Test
     void updateBookById_Test () throws Exception {
 
-        UpdateBooksDto updateBooksDto = new UpdateBooksDto("Book1", "Author1",
+        UpdateBooksDTO updateBooksDto = new UpdateBooksDTO("Book1", "Author1",
                 "Description1", "pdf");
 
         mockMvc.perform(put("/books/update/{id}", 1L)

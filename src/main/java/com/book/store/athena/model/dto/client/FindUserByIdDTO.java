@@ -4,9 +4,9 @@ import com.book.store.athena.model.entities.User;
 
 import java.time.LocalDate;
 
-public record FindUserByIdDto (Long userId, String username, String email, LocalDate birthDate) {
+public record FindUserByIdDTO(Long userId, String username, String email, LocalDate birthDate) {
 
-    public FindUserByIdDto(User user) {
+    public FindUserByIdDTO(User user) {
 
         this (user.getId(), user.getUsername(), user.getEmail(), user.getBirthDate());
 

@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDto registerUserDto) {
+    protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDTO registerUserDto) {
 
         userServices.create(registerUserDto);
 
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDto userLoginDto) {
+    protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDTO userLoginDto) {
 
         var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
 
@@ -53,17 +53,8 @@ public class UserController {
 
     }
 
-    @GetMapping("/profile/books/{id}")
-    protected ResponseEntity <Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
-
-        var favorites = userServices.findUserBooksById(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body(favorites);
-
-    }
-
     @GetMapping("/profile/{id}")
-    protected ResponseEntity<Set<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
+    protected ResponseEntity<Set<FindUserByIdDTO>> findUserBooksById (@PathVariable Long id) {
 
         var profile = userServices.findUserById(id);
 
@@ -72,7 +63,7 @@ public class UserController {
     }
 
     @PutMapping("/profile/update/{id}")
-    protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
+    protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDTO updateUserDto) {
 
         userServices.update(id, updateUserDto);
 
@@ -81,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    protected ResponseEntity <Set<FindAllActiveUsersDto>> findAllUsers () {
+    protected ResponseEntity <Set<FindAllActiveUsersDTO>> findAllUsers () {
 
         var users = userServices.findAll();
 

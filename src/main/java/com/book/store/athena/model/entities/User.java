@@ -1,14 +1,12 @@
 package com.book.store.athena.model.entities;
 
-import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.client.RegisterUserDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.dto.client.RegisterUserDTO;
+import com.book.store.athena.model.dto.client.UpdateUserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,7 +45,7 @@ public class User implements UserDetails {
 
     private Boolean active;
 
-    public User (RegisterUserDto registerUserDto) {
+    public User (RegisterUserDTO registerUserDto) {
 
         this.active = true;
 
@@ -58,20 +56,6 @@ public class User implements UserDetails {
         this.password = registerUserDto.password();
 
         this.birthDate = registerUserDto.birthDate();
-
-    }
-
-    public User (RegisterAdminDto registerAdminDto) {
-
-        this.active = true;
-
-        this.name = registerAdminDto.username();
-
-        this.email = registerAdminDto.email();
-
-        this.password = registerAdminDto.password();
-
-        this.birthDate = registerAdminDto.birthDate();
 
     }
 
@@ -87,7 +71,7 @@ public class User implements UserDetails {
 
     }
 
-    public void update (UpdateUserDto updateUserDto) {
+    public void update (UpdateUserDTO updateUserDto) {
 
         if (updateUserDto.username() != null) {
 

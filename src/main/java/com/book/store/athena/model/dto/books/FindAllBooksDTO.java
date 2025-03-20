@@ -4,7 +4,7 @@ import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 
-public record FindAllBooksDto(
+public record FindAllBooksDTO(
 
         String name,
 
@@ -20,7 +20,7 @@ public record FindAllBooksDto(
 
         ) {
 
-            public FindAllBooksDto(Books books) {
+            public FindAllBooksDTO(Books books) {
 
                 this (books.getName(), books.getAuthor(), books.getGenre(),
                         books.getPublisher(), books.getDescription(), books.getPdfPath());

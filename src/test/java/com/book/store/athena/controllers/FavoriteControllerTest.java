@@ -1,7 +1,7 @@
 package com.book.store.athena.controllers;
 
 
-import com.book.store.athena.model.dto.favorite.RequestFavoriteDto;
+import com.book.store.athena.model.dto.favorite.RequestFavoriteDTO;
 import com.book.store.athena.services.FavoriteServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class FavoriteControllerTest {
     @Test
     void insertFavoriteRelation_Test () throws Exception {
 
-        RequestFavoriteDto favoriteDto = new RequestFavoriteDto(1L, 1L);
+        RequestFavoriteDTO favoriteDto = new RequestFavoriteDTO(1L, 1L);
 
         mockMvc.perform(post("/favorites/insert")
                         .content(new ObjectMapper().writeValueAsString(favoriteDto))
