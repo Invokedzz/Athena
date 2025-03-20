@@ -1,6 +1,6 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
+import com.book.store.athena.model.dto.favorite.FindAllFavoritesDTO;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.entities.User;
@@ -44,7 +44,7 @@ class FavoriteServicesTest {
         Mockito.when(favoriteRepository.findAllByActive(Mockito.anyBoolean()))
                 .thenReturn(List.of(new Favorite(new User(), new Books())));
 
-        Set <FindAllFavoritesDto> favoriteList = favoriteServices.findFavoriteByActive(true);
+        Set <FindAllFavoritesDTO> favoriteList = favoriteServices.findFavoriteByActive(true);
 
         Assertions.assertThat(favoriteList.size())
                     .isEqualTo(1);

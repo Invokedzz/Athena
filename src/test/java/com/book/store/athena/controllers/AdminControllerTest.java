@@ -1,8 +1,7 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.infra.TokenAuthService;
-import com.book.store.athena.model.dto.admin.RegisterAdminDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.services.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -46,14 +45,14 @@ class AdminControllerTest {
     @Test
     void registerAdmin_Test () throws Exception {
 
-        RegisterAdminDto registerAdminDto = new RegisterAdminDto("Astraeus", "Astraeus@gmail.com",
+        RegisterUserDTO registerAdminDto = new RegisterUserDTO("Astraeus", "Astraeus@gmail.com",
                                 "This isn't Game of Thrones, Morty.", LocalDate.parse("1999-10-02"));
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         objectMapper.findAndRegisterModules();
 
-        mockMvc.perform(post("/admin/register")
+        mockMvc.perform(post("/register")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(registerAdminDto)))
                         .andExpect(status().isCreated());
@@ -71,7 +70,7 @@ class AdminControllerTest {
 
         Mockito.when(tokenAuthService.generateUserJWToken(Mockito.any())).thenReturn(token);
 
-        mockMvc.perform(post("/admin/login")
+        mockMvc.perform(post("/login")
                 .contentType("application/json")
                 .content("{\"username\":\"username\",\"password\":\"password\"}"))
                 .andExpect(status().isOk());
@@ -83,23 +82,11 @@ class AdminControllerTest {
 
         var admins = adminService.findAll();
 
-        mockMvc.perform(get("/admin/all")
+        mockMvc.perform(get("/all")
                 .contentType("application/json")
                 .content(new ObjectMapper().writeValueAsString(admins)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(admins)));
-
-    }
-
-    @Test
-    void getAdminProfileById_Test () throws Exception {
-
-        var profile = adminService.findAdminById(1L);
-
-        mockMvc.perform(get("/admin/profile/{id}", 1L)
-                .contentType("application/json")
-                .content(new ObjectMapper().writeValueAsString(profile)))
-                .andExpect(status().isOk());
 
     }
 

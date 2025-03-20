@@ -1,8 +1,8 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.infra.TokenAuthService;
-import com.book.store.athena.model.dto.client.RegisterUserDto;
-import com.book.store.athena.model.dto.client.UpdateUserDto;
+import com.book.store.athena.model.dto.client.RegisterUserDTO;
+import com.book.store.athena.model.dto.client.UpdateUserDTO;
 import com.book.store.athena.services.UserServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class UserControllerTest {
     @Test
     void registerUser_Test () throws Exception {
 
-        RegisterUserDto registerUserDto = new RegisterUserDto("Amphitryon", "amphi@gmail.com",
+        RegisterUserDTO registerUserDto = new RegisterUserDTO("Amphitryon", "amphi@gmail.com",
                 "1234567", LocalDate.parse("2004-10-12"));
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -82,18 +82,6 @@ class UserControllerTest {
     }
 
     @Test
-    void findUserBooksById_Test () throws Exception {
-
-        var books = userServices.findUserBooksById(1L);
-
-        mockMvc.perform(get("/users/profile/books/{id}", 1L)
-                .content(new ObjectMapper().writeValueAsString(books))
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
     void getProfileById_Test () throws Exception {
 
         var profile = userServices.findUserById(1L);
@@ -108,7 +96,7 @@ class UserControllerTest {
     @Test
     void updateProfileById_Test () throws Exception {
 
-        UpdateUserDto updateUserDto = new UpdateUserDto("NorthernLight", "northern@gmail.com", "15000017");
+        UpdateUserDTO updateUserDto = new UpdateUserDTO("NorthernLight", "northern@gmail.com", "15000017");
 
         mockMvc.perform(put("/users/profile/update/{id}", 1L)
                         .contentType("application/json")

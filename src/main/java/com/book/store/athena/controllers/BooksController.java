@@ -1,8 +1,9 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.model.dto.books.FindAllBooksDto;
-import com.book.store.athena.model.dto.books.CreateBooksDto;
-import com.book.store.athena.model.dto.books.UpdateBooksDto;
+import com.book.store.athena.model.dto.books.FindAllBooksDTO;
+import com.book.store.athena.model.dto.books.CreateBooksDTO;
+import com.book.store.athena.model.dto.books.UpdateBooksDTO;
+import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.services.BooksService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,16 +27,16 @@ public class BooksController {
 
     @Transactional // rollback
     @PostMapping("/create")
-    protected ResponseEntity <Void> createBook (@RequestBody @Valid CreateBooksDto books) {
+    protected ResponseEntity <Void> createBook (@RequestBody @Valid CreateBooksDTO books) {
 
-        booksService.registerBook(books);
+        booksService.create(books);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
     @GetMapping("/collection")
-    protected ResponseEntity <Set<FindAllBooksDto>> findAllBooks () {
+    protected ResponseEntity <Set<FindAllBooksDTO>> findAllBooks () {
 
         var bookList = booksService.findAll();
 
@@ -43,9 +44,18 @@ public class BooksController {
 
     }
 
+    @GetMapping("/profile/books/{id}")
+    protected ResponseEntity <Set<FindUserBooksByIdDTO>> findAllFavorites (@PathVariable Long id) {
+
+        var favorites = booksService.findUserBooksById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(favorites);
+
+    }
+
     @Transactional
     @PutMapping("/update/{id}")
-    protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDto books) {
+    protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDTO books) {
 
         booksService.update(id, books);
 

@@ -1,7 +1,7 @@
 package com.book.store.athena.services;
 
-import com.book.store.athena.model.dto.books.FindAllBooksDto;
-import com.book.store.athena.model.dto.books.UpdateBooksDto;
+import com.book.store.athena.model.dto.books.FindAllBooksDTO;
+import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
 import org.assertj.core.api.Assertions;
@@ -41,7 +41,7 @@ class BooksServiceTest {
 
         Mockito.when(booksRepository.findAllByActive(true)).thenReturn(List.of(new Books()));
 
-        Set <FindAllBooksDto> findAllBooksDtoList = booksService.findAll();
+        Set <FindAllBooksDTO> findAllBooksDtoList = booksService.findAll();
 
         Mockito.when(booksService.findAll()).thenReturn(findAllBooksDtoList);
 
@@ -58,7 +58,7 @@ class BooksServiceTest {
 
         Mockito.when(booksRepository.save(Mockito.any(Books.class))).thenReturn(new Books());
 
-        UpdateBooksDto updateBooksDto = new UpdateBooksDto("Book Title", "Author Title",
+        UpdateBooksDTO updateBooksDto = new UpdateBooksDTO("Book Title", "Author Title",
                                                         "Lorem ipsum dolor sit amet", "text");
 
         booksService.update(1L, updateBooksDto);

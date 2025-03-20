@@ -1,7 +1,5 @@
 package com.book.store.athena.model.entities;
 
-import com.book.store.athena.model.dto.favorite.FindAllFavoritesDto;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

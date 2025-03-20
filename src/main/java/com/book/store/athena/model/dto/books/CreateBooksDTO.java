@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
-public record CreateBooksDto(
+public record CreateBooksDTO(
 
         @NotBlank
         @Length(min = 4, max = 50, message = "name input length must be between 4 to 50 characters")

@@ -32,7 +32,7 @@ public class UserServices {
 
     }
 
-    public void create (RegisterUserDto registerUserDto) throws AgeRestrictionException {
+    public void create (RegisterUserDTO registerUserDto) {
 
         var role = roleRepository.findById(1L);
 
@@ -56,19 +56,13 @@ public class UserServices {
 
     }
 
-    public Set <FindUserBooksByIdDto> findUserBooksById (Long userId) {
-
-        return userRepository.findFavoriteBooksByUserId(userId).stream().map(FindUserBooksByIdDto::new).collect(Collectors.toSet());
-
-    }
-
-    public Set <FindUserByIdDto> findUserById (Long userId) {
+    public Set <FindUserByIdDTO> findUserById (Long userId) {
 
         return null;
 
     }
 
-    public User update (Long id, UpdateUserDto updateUserDto) {
+    public void update (Long id, UpdateUserDTO updateUserDto) {
 
         var searchForUser = userRepository.findById(id);
 
@@ -80,15 +74,13 @@ public class UserServices {
 
             userRepository.save(obtainedUser);
 
-            return obtainedUser;
-
         }
 
-        return null;
+        verifyIfUserExists(searchForUser);
 
     }
 
-    public User disable (Long id) {
+    public void disable (Long id) {
 
         var searchForUser = userRepository.findById(id);
 
@@ -100,11 +92,9 @@ public class UserServices {
 
             userRepository.save(obtainedUser);
 
-            return obtainedUser;
-
         }
 
-        return null;
+        verifyIfUserExists(searchForUser);
 
     }
 
@@ -126,14 +116,14 @@ public class UserServices {
 
     }
 
-    public Set <FindAllActiveUsersDto> findAll () {
+    public Set <FindAllActiveUsersDTO> findAll () {
 
         return userRepository.findAllUsersByActive(true, "ROLE_USER")
-                .stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
+                .stream().map(FindAllActiveUsersDTO::new).collect(Collectors.toSet());
 
     }
 
-    private void verifyIfUserExists (Optional <User> user) {
+    private void verifyIfUserExists (Optional <?> user) {
 
         if (user.isEmpty()) {
 
