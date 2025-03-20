@@ -6,10 +6,9 @@ import java.time.LocalDate;
 
 public record FindUserByIdDto (Long userId, String username, String email, LocalDate birthDate) {
 
-    public FindUserByIdDto (User user) {
+    public FindUserByIdDto(User user) {
 
-        this (user.getId(), user.getName(), user.getEmail(), user.getBirthDate());
+        this (user.getId(), user.getUsername(), user.getEmail(), user.getBirthDate());
 
     }
-
 }

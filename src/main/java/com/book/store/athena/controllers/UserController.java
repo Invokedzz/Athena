@@ -33,7 +33,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/register") // user
+    @PostMapping("/register")
     protected ResponseEntity <Void> register (@RequestBody @Valid RegisterUserDto registerUserDto) {
 
         userServices.create(registerUserDto);
@@ -42,7 +42,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/login") // user
+    @PostMapping("/login")
     protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDto userLoginDto) {
 
         var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
@@ -53,7 +53,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/profile/books/{id}") // user
+    @GetMapping("/profile/books/{id}")
     protected ResponseEntity <Set<FindUserBooksByIdDto>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = userServices.findUserBooksById(id);
@@ -62,7 +62,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/profile/{id}") // user
+    @GetMapping("/profile/{id}")
     protected ResponseEntity<Set<FindUserByIdDto>> findUserBooksById (@PathVariable Long id) {
 
         var profile = userServices.findUserById(id);
@@ -71,7 +71,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/profile/update/{id}") // user
+    @PutMapping("/profile/update/{id}")
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDto updateUserDto) {
 
         userServices.update(id, updateUserDto);
@@ -80,7 +80,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/all") // admin
+    @GetMapping("/all")
     protected ResponseEntity <Set<FindAllActiveUsersDto>> findAllUsers () {
 
         var users = userServices.findAll();
