@@ -1,12 +1,12 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.exceptions.NotFoundException;
 import com.book.store.athena.infra.SecurityConfig;
-import com.book.store.athena.infra.exceptions.AgeRestrictionException;
+import com.book.store.athena.exceptions.AgeRestrictionException;
 import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
-import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -64,7 +64,7 @@ public class UserServices {
 
     public Set <FindUserByIdDto> findUserById (Long userId) {
 
-        return userRepository.findById(userId).stream().map(FindUserByIdDto::new).collect(Collectors.toCollection(OrderedHashSet::new));
+        return null;
 
     }
 
@@ -108,23 +108,21 @@ public class UserServices {
 
     }
 
-    public User reactivate (Long id) {
+    public void reactivate (Long id) {
 
         var searchForUser = userRepository.findById(id);
 
         if (searchForUser.isPresent()) {
 
-            var obtainedUser = searchForUser.get();
+            User obtainedUser = searchForUser.get();
 
             obtainedUser.activate();
 
             userRepository.save(obtainedUser);
 
-            return obtainedUser;
-
         }
 
-        return null;
+        verifyIfUserExists(searchForUser);
 
     }
 
@@ -132,6 +130,16 @@ public class UserServices {
 
         return userRepository.findAllUsersByActive(true, "ROLE_USER")
                 .stream().map(FindAllActiveUsersDto::new).collect(Collectors.toSet());
+
+    }
+
+    private void verifyIfUserExists (Optional <User> user) {
+
+        if (user.isEmpty()) {
+
+            throw new NotFoundException("User not found");
+
+        }
 
     }
 

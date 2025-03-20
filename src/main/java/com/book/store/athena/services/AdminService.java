@@ -1,14 +1,15 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.infra.SecurityConfig;
-import com.book.store.athena.model.dto.admin.FindAdminByIdDto;
 import com.book.store.athena.model.dto.admin.RegisterAdminDto;
 import com.book.store.athena.model.dto.client.FindAllActiveUsersDto;
+import com.book.store.athena.model.dto.client.FindUserByIdDto;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,9 @@ public class AdminService {
 
     public User create (RegisterAdminDto registerAdminDto) {
 
-        var role = roleRepository.findById(2L);
+        var roleUser = roleRepository.findById(1L);
+
+        var roleAdmin = roleRepository.findById(2L);
 
         User admin = new User(registerAdminDto);
 
@@ -43,11 +46,15 @@ public class AdminService {
 
         var createdAdmin = userRepository.save(admin);
 
-        if (role.isPresent()) {
+        if (roleAdmin.isPresent() && roleUser.isPresent()) {
 
-            var obtainedRole = role.get();
+            var obtainedAdminRole = roleAdmin.get();
 
-            roleRepository.insertRole(createdAdmin.getId(), obtainedRole.getId());
+            var obtainedUserRole = roleUser.get();
+
+            roleRepository.insertRole(createdAdmin.getId(), obtainedAdminRole.getId());
+
+            roleRepository.insertRole(createdAdmin.getId(), obtainedUserRole.getId());
 
             return admin;
 
@@ -57,9 +64,10 @@ public class AdminService {
 
     }
 
-    public Set <FindAdminByIdDto> findAdminById (Long id) {
+    public Optional <FindUserByIdDto> findAdminById (Long id) {
 
-        return null;
+        return userRepository.findUserAccordingToRole(id, true, "ROLE_ADMIN")
+                    .stream().map(FindUserByIdDto::new).findFirst();
 
     }
 
