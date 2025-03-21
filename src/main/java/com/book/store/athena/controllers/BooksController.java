@@ -25,7 +25,6 @@ public class BooksController {
 
     }
 
-    @Transactional // rollback
     @PostMapping("/create")
     protected ResponseEntity <Void> createBook (@RequestBody @Valid CreateBooksDTO books) {
 
@@ -44,7 +43,7 @@ public class BooksController {
 
     }
 
-    @GetMapping("/profile/books/{id}")
+    @GetMapping("/favorite-books/{id}")
     protected ResponseEntity <Set<FindUserBooksByIdDTO>> findAllFavorites (@PathVariable Long id) {
 
         var favorites = booksService.findUserBooksById(id);
@@ -53,7 +52,6 @@ public class BooksController {
 
     }
 
-    @Transactional
     @PutMapping("/update/{id}")
     protected ResponseEntity <Void> updateBook (@PathVariable Long id, @Valid @RequestBody UpdateBooksDTO books) {
 
@@ -63,8 +61,7 @@ public class BooksController {
 
     }
 
-    @Transactional
-    @PutMapping("/reactivate/{id}") // admin
+    @PutMapping("/reactivate/{id}")
     protected ResponseEntity <Void> reactivateBook (@PathVariable Long id) {
 
         booksService.reactivate(id);
@@ -73,8 +70,7 @@ public class BooksController {
 
     }
 
-    @Transactional
-    @DeleteMapping("/delete/{id}") // admin
+    @DeleteMapping("/delete/{id}")
     protected ResponseEntity <Void> deleteBook (@PathVariable Long id) {
 
         booksService.disable(id);

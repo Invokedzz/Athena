@@ -7,6 +7,7 @@ import com.book.store.athena.model.entities.Favorite;
 import com.book.store.athena.model.repository.BooksRepository;
 import com.book.store.athena.model.repository.FavoriteRepository;
 import com.book.store.athena.model.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class FavoriteServices {
 
     }
 
+    @Transactional
     public void create (Long userId, Long bookId) {
 
         var user = userRepository.findById(userId);
@@ -58,6 +60,7 @@ public class FavoriteServices {
 
     }
 
+    @Transactional
     public void reactivate (Long id) {
 
         var favorite = favoriteRepository.findById(id);
@@ -76,6 +79,7 @@ public class FavoriteServices {
 
     }
 
+    @Transactional
     public void disable (Long id) {
 
         var favorite = favoriteRepository.findById(id);

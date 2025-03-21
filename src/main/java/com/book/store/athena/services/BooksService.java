@@ -7,6 +7,7 @@ import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class BooksService {
 
     }
 
+    @Transactional
     public void create(CreateBooksDTO createBooksDto) {
 
         booksRepository.save(new Books(createBooksDto));
@@ -49,6 +51,7 @@ public class BooksService {
 
     }
 
+    @Transactional
     public void update (Long id, UpdateBooksDTO updateBooksDto) {
 
         var queriedBook = booksRepository.findById(id);
@@ -67,6 +70,7 @@ public class BooksService {
 
     }
 
+    @Transactional
     public void reactivate (Long id) {
 
         var queriedBook = booksRepository.findById(id);
@@ -85,6 +89,7 @@ public class BooksService {
 
     }
 
+    @Transactional
     public void disable (Long id) {
 
         var queriedBook = booksRepository.findById(id);
