@@ -1,18 +1,13 @@
 package com.book.store.athena.controllers;
 
-import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.services.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,12 +31,6 @@ class AdminControllerTest {
     @MockitoBean
     private AdminService adminService;
 
-    @MockitoBean
-    private AuthenticationManager authenticationManager;
-
-    @MockitoBean
-    private TokenAuthService tokenAuthService;
-
     @Test
     void registerAdmin_Test () throws Exception {
 
@@ -52,28 +41,10 @@ class AdminControllerTest {
 
         objectMapper.findAndRegisterModules();
 
-        mockMvc.perform(post("/register")
+        mockMvc.perform(post("/register-as-administrator")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(registerAdminDto)))
                         .andExpect(status().isCreated());
-
-    }
-
-    @Test
-    void loginAdmin_Test () throws Exception {
-
-        var authMock = Mockito.mock(Authentication.class);
-
-        Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class))).thenReturn(authMock);
-
-        String token = "random-token";
-
-        Mockito.when(tokenAuthService.generateUserJWToken(Mockito.any())).thenReturn(token);
-
-        mockMvc.perform(post("/login")
-                .contentType("application/json")
-                .content("{\"username\":\"username\",\"password\":\"password\"}"))
-                .andExpect(status().isOk());
 
     }
 
@@ -82,7 +53,7 @@ class AdminControllerTest {
 
         var admins = adminService.findAll();
 
-        mockMvc.perform(get("/all")
+        mockMvc.perform(get("/all-administrators")
                 .contentType("application/json")
                 .content(new ObjectMapper().writeValueAsString(admins)))
                 .andExpect(status().isOk())

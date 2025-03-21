@@ -32,15 +32,21 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(e -> e
-                        .requestMatchers(HttpMethod.POST, "/users/register", "/users/login").permitAll()
-                        .requestMatchers("/users/profile/{id}", "/users/profile/books/{id}", "/users/profile/disable/{id}",
-                                "/books/create", "/users/profile/reactivate/{id}", "/favorites/insert")
+
+                        .requestMatchers("/profile/reactivate/{id}", "/profile/disable/{id}", "/update-profile/{id}",
+                                "/books/create", "/books/favorite-books/{id}"
+                                , "/favorites/reactivate/{id}", "/favorites/reactivate/{id}",
+                                "/favorites/add")
                         .hasRole("USER")
+
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/books/collection").permitAll()
-                        .requestMatchers("/profile/{id}", "/users/actives",
-                                "/books/delete/{id}", "/books/reactivate/{id}", "/favorites/display",
-                                "/profile/edit/{id}", "/admin/all", "/users/all").hasRole("ADMIN").anyRequest().authenticated()
+
+                        .requestMatchers("/books/update/{id}", "/books/delete/{id}",
+                        "/books/reactivate/{id}", "/favorites/collection",
+                                "/all-users", "/all-administrators", "/register-as-administrator")
+                        .hasRole("ADMIN").anyRequest().authenticated()
                 )
 
                 .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)

@@ -34,7 +34,7 @@ class FavoriteControllerTest {
 
         RequestFavoriteDTO favoriteDto = new RequestFavoriteDTO(1L, 1L);
 
-        mockMvc.perform(post("/favorites/insert")
+        mockMvc.perform(post("/favorites/add")
                         .content(new ObjectMapper().writeValueAsString(favoriteDto))
                         .contentType("application/json"))
                         .andExpect(status().isCreated());
@@ -46,7 +46,7 @@ class FavoriteControllerTest {
 
         var favorites = favoriteServices.findFavoriteByActive(true);
 
-        mockMvc.perform(get("/favorites/display")
+        mockMvc.perform(get("/favorites/collection")
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(favorites)))
                         .andExpect(status().isOk());

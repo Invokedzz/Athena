@@ -55,7 +55,7 @@ class UserControllerTest {
 
         String userJson = objectMapper.writeValueAsString(registerUserDto);
 
-        mockMvc.perform(post("/users/register")
+        mockMvc.perform(post("/register")
                 .contentType("application/json")
                 .content(userJson))
                 .andExpect(status().isCreated());
@@ -74,7 +74,7 @@ class UserControllerTest {
 
         Mockito.when(tokenAuthService.generateUserJWToken(Mockito.any())).thenReturn(mockJwtToken);
 
-        mockMvc.perform(post("/users/login")
+        mockMvc.perform(post("/login")
                         .contentType("application/json")
                         .content("{\"username\":\"username\",\"password\":\"password\"}"))
                         .andExpect(status().isOk());
@@ -86,7 +86,7 @@ class UserControllerTest {
 
         var profile = userServices.findUserById(1L);
 
-        mockMvc.perform(get("/users/profile/{id}", 1L)
+        mockMvc.perform(get("/profile/{id}", 1L)
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(profile)))
                         .andExpect(status().isOk());
@@ -98,7 +98,7 @@ class UserControllerTest {
 
         UpdateUserDTO updateUserDto = new UpdateUserDTO("NorthernLight", "northern@gmail.com", "15000017");
 
-        mockMvc.perform(put("/users/profile/update/{id}", 1L)
+        mockMvc.perform(put("/update-profile/{id}", 1L)
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(updateUserDto)))
                         .andExpect(status().isNoContent());
@@ -110,7 +110,7 @@ class UserControllerTest {
 
         var activeUsers = userServices.findAll();
 
-        mockMvc.perform(get("/users/all")
+        mockMvc.perform(get("/all-users")
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(activeUsers)))
                 .andExpect(status().isOk())
@@ -121,7 +121,7 @@ class UserControllerTest {
     @Test
     void reactivateUser_Test () throws Exception {
 
-        mockMvc.perform(put("/users/profile/reactivate/{id}", 1L)
+        mockMvc.perform(put("/profile/reactivate/{id}", 1L)
                 .contentType("application/json"))
                 .andExpect(status().isNoContent());
 
@@ -130,7 +130,7 @@ class UserControllerTest {
     @Test
     void disableUser_Test () throws Exception {
 
-        mockMvc.perform(delete("/users/profile/disable/{id}", 1L)
+        mockMvc.perform(delete("/profile/disable/{id}", 1L)
                         .contentType("application/json"))
                         .andExpect(status().isNoContent());
 

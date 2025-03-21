@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserServices userServices;
@@ -62,7 +61,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/profile/update/{id}")
+    @PutMapping("/update-profile/{id}")
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDTO updateUserDto) {
 
         userServices.update(id, updateUserDto);
@@ -71,7 +70,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all-users")
     protected ResponseEntity <Set<FindAllActiveUsersDTO>> findAllUsers () {
 
         var users = userServices.findAll();

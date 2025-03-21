@@ -8,6 +8,7 @@ import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,6 +35,7 @@ public class AdminService {
 
     }
 
+    @Transactional
     public void create (RegisterUserDTO registerUserDTO) {
 
         var roleUser = roleRepository.findById(1L);

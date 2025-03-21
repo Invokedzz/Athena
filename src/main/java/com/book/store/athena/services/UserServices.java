@@ -7,6 +7,7 @@ import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.RoleRepository;
 import com.book.store.athena.model.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class UserServices {
 
     }
 
+    @Transactional
     public void create (RegisterUserDTO registerUserDto) {
 
         var role = roleRepository.findById(1L);
@@ -62,6 +64,7 @@ public class UserServices {
 
     }
 
+    @Transactional
     public void update (Long id, UpdateUserDTO updateUserDto) {
 
         var searchForUser = userRepository.findById(id);
@@ -80,6 +83,7 @@ public class UserServices {
 
     }
 
+    @Transactional
     public void disable (Long id) {
 
         var searchForUser = userRepository.findById(id);
@@ -98,6 +102,7 @@ public class UserServices {
 
     }
 
+    @Transactional
     public void reactivate (Long id) {
 
         var searchForUser = userRepository.findById(id);
