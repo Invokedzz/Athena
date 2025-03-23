@@ -37,6 +37,7 @@ public class TokenAuthService {
                     .withSubject(user.getUsername())
                     .withClaim("USER_ID", user.getId())
                     .withClaim("USER", roles)
+                    .withClaim("IS_ACTIVE", user.getActive())
                     .withExpiresAt(expireTokenDate())
                     .sign(algorithm);
 
@@ -68,7 +69,7 @@ public class TokenAuthService {
 
     }
 
-    public Long getUserIdByToken (HttpHeaders request, Long id) {
+    public void validateUserByToken(HttpHeaders request, Long id) {
 
         String token = Objects.requireNonNull(request.get("Authorization")).getFirst();
 
@@ -77,8 +78,6 @@ public class TokenAuthService {
         Long userId = JWT.decode(jwt).getClaim("USER_ID").asLong();
 
         verifyIfIdMatches(id, userId);
-
-        return userId;
 
     }
 

@@ -1,10 +1,12 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.FindAllActiveUsersDTO;
 import com.book.store.athena.model.dto.client.FindUserByIdDTO;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.services.AdminService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +19,13 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
+    private final TokenAuthService tokenAuthService;
+
+    public AdminController(AdminService adminService, TokenAuthService tokenAuthService) {
 
         this.adminService = adminService;
+
+        this.tokenAuthService = tokenAuthService;
 
     }
 
@@ -42,7 +48,9 @@ public class AdminController {
     }
 
     @GetMapping("/profile-adm/{id}")
-    protected  ResponseEntity <Optional<FindUserByIdDTO>> adminProfile (@PathVariable Long id) {
+    protected  ResponseEntity <Optional<FindUserByIdDTO>> adminProfile (@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+
+        tokenAuthService.validateUserByToken(headers, id);
 
         var profile = adminService.findAdminById(id);
 
