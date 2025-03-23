@@ -5,10 +5,12 @@ import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.services.UserServices;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -42,18 +44,22 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    protected ResponseEntity<String> login (@RequestBody @Valid UserLoginDTO userLoginDto) {
+    protected ResponseEntity <TokenDataDTO> login (@RequestBody @Valid UserLoginDTO userLoginDto) {
 
-        var token = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
+        var searchForUser = new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password());
 
-        var authToken = authenticationManager.authenticate(token);
+        var authenticateToken = authenticationManager.authenticate(searchForUser);
 
-        return ResponseEntity.ok(tokenAuthService.generateUserJWToken((User)authToken.getPrincipal()));
+        var generateToken = tokenAuthService.generateUserJWToken((User)authenticateToken.getPrincipal());
+
+        return ResponseEntity.ok(new TokenDataDTO(generateToken));
 
     }
 
     @GetMapping("/profile/{id}")
-    protected ResponseEntity<Set<FindUserByIdDTO>> findUserBooksById (@PathVariable Long id) {
+    protected ResponseEntity<Set<FindUserByIdDTO>> findUserBooksById (@PathVariable Long id, @RequestHeader HttpHeaders headers) {
+
+        tokenAuthService.getUserIdByToken(headers, id);
 
         var profile = userServices.findUserById(id);
 
@@ -62,11 +68,15 @@ public class UserController {
     }
 
     @PutMapping("/update-profile/{id}")
-    protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDTO updateUserDto) {
+    protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDTO updateUserDto, @RequestHeader HttpHeaders headers) {
+
+        tokenAuthService.getUserIdByToken(headers, id);
 
         userServices.update(id, updateUserDto);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).header(HttpHeaders.LOCATION, "/login").build();
 
     }
 

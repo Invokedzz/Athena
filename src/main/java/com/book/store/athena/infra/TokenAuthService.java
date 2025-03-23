@@ -4,14 +4,17 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.book.store.athena.exceptions.ForbiddenRequestException;
 import com.book.store.athena.exceptions.TokenGenerationException;
 import com.book.store.athena.model.entities.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TokenAuthService {
@@ -22,7 +25,8 @@ public class TokenAuthService {
     public String generateUserJWToken(User user) {
 
         List <String> roles = user.getAuthorities()
-                        .stream().map(GrantedAuthority::getAuthority).toList();
+                        .stream().map(GrantedAuthority::getAuthority)
+                        .toList();
 
         try {
 
@@ -31,6 +35,7 @@ public class TokenAuthService {
             return JWT.create()
                     .withIssuer("athena_library")
                     .withSubject(user.getUsername())
+                    .withClaim("USER_ID", user.getId())
                     .withClaim("USER", roles)
                     .withExpiresAt(expireTokenDate())
                     .sign(algorithm);
@@ -58,6 +63,30 @@ public class TokenAuthService {
         } catch (JWTVerificationException exception){
 
             throw new TokenGenerationException(exception.getMessage());
+
+        }
+
+    }
+
+    public Long getUserIdByToken (HttpHeaders request, Long id) {
+
+        String token = Objects.requireNonNull(request.get("Authorization")).getFirst();
+
+        String jwt = token.replace("Bearer ", "");
+
+        Long userId = JWT.decode(jwt).getClaim("USER_ID").asLong();
+
+        verifyIfIdMatches(id, userId);
+
+        return userId;
+
+    }
+
+    private void verifyIfIdMatches (Long id, Long userId) {
+
+        if (!id.equals(userId)) {
+
+            throw new ForbiddenRequestException("Forbidden request.");
 
         }
 
