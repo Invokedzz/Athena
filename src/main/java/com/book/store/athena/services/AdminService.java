@@ -24,7 +24,7 @@ public class AdminService {
 
     private final SecurityConfig securityConfig;
 
-    public AdminService (UserRepository userRepository, RoleRepository roleRepository,SecurityConfig securityConfig) {
+    public AdminService (UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig) {
 
         this.userRepository = userRepository;
 

@@ -2,7 +2,6 @@ package com.book.store.athena.infra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,15 +32,13 @@ public class SecurityConfig {
                 .sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(e -> e
 
-                        .requestMatchers("/profile/reactivate/{id}", "/profile/disable/{id}", "/update-profile/{id}",
+                        .requestMatchers("/profile/disable/{id}", "/update-profile/{id}",
                                 "/books/create", "/books/favorite-books/{id}"
                                 , "/favorites/reactivate/{id}", "/favorites/reactivate/{id}",
                                 "/favorites/add")
                         .hasRole("USER")
 
-                        .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/books/collection").permitAll()
+                        .requestMatchers("/register", "/login", "/reactivate-account", "/books/collection").permitAll()
 
                         .requestMatchers("/books/update/{id}", "/books/delete/{id}",
                         "/books/reactivate/{id}", "/favorites/collection",

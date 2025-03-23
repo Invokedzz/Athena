@@ -1,5 +1,6 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.exceptions.ForbiddenRequestException;
 import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.*;
 import com.book.store.athena.model.entities.User;
@@ -52,6 +53,12 @@ public class UserController {
 
         var generateToken = tokenAuthService.generateUserJWToken((User)authenticateToken.getPrincipal());
 
+        if (((User) authenticateToken.getPrincipal()).getActive().equals(false)) {
+
+            throw new ForbiddenRequestException("This account is disabled. Please try again.");
+
+        }
+
         return ResponseEntity.ok(new TokenDataDTO(generateToken));
 
     }
@@ -59,7 +66,7 @@ public class UserController {
     @GetMapping("/profile/{id}")
     protected ResponseEntity<Set<FindUserByIdDTO>> findUserBooksById (@PathVariable Long id, @RequestHeader HttpHeaders headers) {
 
-        tokenAuthService.getUserIdByToken(headers, id);
+        tokenAuthService.validateUserByToken(headers, id);
 
         var profile = userServices.findUserById(id);
 
@@ -70,7 +77,7 @@ public class UserController {
     @PutMapping("/update-profile/{id}")
     protected ResponseEntity <Void> updateUserById (@PathVariable Long id, @RequestBody @Valid UpdateUserDTO updateUserDto, @RequestHeader HttpHeaders headers) {
 
-        tokenAuthService.getUserIdByToken(headers, id);
+        tokenAuthService.validateUserByToken(headers, id);
 
         userServices.update(id, updateUserDto);
 
@@ -89,17 +96,19 @@ public class UserController {
 
     }
 
-    @PutMapping("/profile/reactivate/{id}")
-    protected ResponseEntity <Void> reactivate (@PathVariable Long id) {
+    @PutMapping("/reactivate-account")
+    protected ResponseEntity <Void> reactivate (@RequestBody @Valid ReactivateUserDTO reactivateUserDto) {
 
-        userServices.reactivate(id);
+        userServices.reactivate(reactivateUserDto.email());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
     @DeleteMapping("/profile/disable/{id}")
-    protected ResponseEntity <Void> disable (@PathVariable Long id) {
+    protected ResponseEntity <Void> disable (@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+
+        tokenAuthService.validateUserByToken(headers, id);
 
         userServices.disable(id);
 

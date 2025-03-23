@@ -108,21 +108,19 @@ public class UserServices {
     }
 
     @Transactional
-    public void reactivate (Long id) {
+    public void reactivate (String email) {
 
-        var searchForUser = userRepository.findById(id);
+        var searchForUser = userRepository.findUserByEmail(email);
 
-        if (searchForUser.isPresent()) {
+        if (searchForUser == null) {
 
-            User obtainedUser = searchForUser.get();
-
-            obtainedUser.activate();
-
-            userRepository.save(obtainedUser);
+            throw new NotFoundException("Sorry. We weren't able to find any user with that email!");
 
         }
 
-        verifyIfUserExists(searchForUser);
+        searchForUser.activate();
+
+        userRepository.save(searchForUser);
 
     }
 
@@ -133,9 +131,9 @@ public class UserServices {
 
     }
 
-    private void verifyIfUserExists (Optional <?> user) {
+    private void verifyIfUserExists (Optional <?> users) {
 
-        if (user.isEmpty()) {
+        if (users.isEmpty()) {
 
             throw new NotFoundException("User not found");
 
