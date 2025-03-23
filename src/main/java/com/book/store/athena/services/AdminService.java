@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,8 +65,12 @@ public class AdminService {
 
     public Optional <FindUserByIdDTO> findAdminById (Long id) {
 
-        return userRepository.findUserAccordingToRole(id, true, "ROLE_ADMIN")
+        var adm = userRepository.findUserAccordingToRole(id, true, "ROLE_ADMIN")
                     .stream().map(FindUserByIdDTO::new).findFirst();
+
+        verifyIfCollectionOfAdminsExist(adm);
+
+        return adm;
 
     }
 
@@ -75,6 +78,16 @@ public class AdminService {
 
         return userRepository.findAllUsersByActive(true, "ROLE_ADMIN")
                 .stream().map(FindAllActiveUsersDTO::new).collect(Collectors.toSet());
+
+    }
+
+    private void verifyIfCollectionOfAdminsExist (Optional <?> adm) {
+
+        if (adm.isEmpty()) {
+
+            throw new NotFoundException("Admin not found");
+
+        }
 
     }
 

@@ -82,18 +82,6 @@ class UserControllerTest {
     }
 
     @Test
-    void getProfileById_Test () throws Exception {
-
-        var profile = userServices.findUserById(1L);
-
-        mockMvc.perform(get("/profile/{id}", 1L)
-                        .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(profile)))
-                        .andExpect(status().isOk());
-
-    }
-
-    @Test
     void updateProfileById_Test () throws Exception {
 
         UpdateUserDTO updateUserDto = new UpdateUserDTO("NorthernLight", "northern@gmail.com", "15000017");

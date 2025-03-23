@@ -49,7 +49,7 @@ public class Books {
 
         this.active = true;
 
-        this.name = booksDto.name();
+        this.name = booksDto.name().toUpperCase();
 
         this.author = booksDto.author();
 

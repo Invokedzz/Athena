@@ -60,7 +60,12 @@ public class UserServices {
 
     public Set <FindUserByIdDTO> findUserById (Long userId) {
 
-        return null;
+        var user = userRepository.findUserAccordingToRole(userId, true, "ROLE_USER")
+                .stream().map(FindUserByIdDTO::new).collect(Collectors.toSet());
+
+        verifyIfCollectionOfUsersExist(user);
+
+        return user;
 
     }
 
@@ -131,6 +136,16 @@ public class UserServices {
     private void verifyIfUserExists (Optional <?> user) {
 
         if (user.isEmpty()) {
+
+            throw new NotFoundException("User not found");
+
+        }
+
+    }
+
+    private void verifyIfCollectionOfUsersExist (Set <?> users) {
+
+        if (users.isEmpty()) {
 
             throw new NotFoundException("User not found");
 

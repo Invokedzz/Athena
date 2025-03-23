@@ -1,9 +1,6 @@
 package com.book.store.athena.infra;
 
-import com.book.store.athena.exceptions.AgeRestrictionException;
-import com.book.store.athena.exceptions.BadRequestException;
-import com.book.store.athena.exceptions.ForbiddenRequestException;
-import com.book.store.athena.exceptions.NotFoundException;
+import com.book.store.athena.exceptions.*;
 import com.book.store.athena.model.dto.errors.ErrorDTO;
 import org.springframework.http.HttpStatus;
 
