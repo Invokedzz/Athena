@@ -23,13 +23,17 @@ public class UserServices {
 
     private final SecurityConfig securityConfig;
 
-    public UserServices(UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig) {
+    private final ProfanityContentService profanityContentService;
+
+    public UserServices(UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig, ProfanityContentService profanityContentService) {
 
         this.userRepository = userRepository;
 
         this.roleRepository = roleRepository;
 
         this.securityConfig = securityConfig;
+
+        this.profanityContentService = profanityContentService;
 
     }
 
@@ -47,6 +51,8 @@ public class UserServices {
         if (role.isPresent()) {
 
             var obtainedRole = role.get();
+
+            profanityContentService.checkProfanityLevel(registerUserDto.toString());
 
             if (!isUserAgeAbove15(registerUserDto.birthDate())) throw new AgeRestrictionException("You must have more than 15 years to enter the website");
 
@@ -79,6 +85,8 @@ public class UserServices {
             var obtainedUser = searchForUser.get();
 
             obtainedUser.update(updateUserDto);
+
+            profanityContentService.checkProfanityLevel(obtainedUser.getUsername());
 
             userRepository.save(obtainedUser);
 
