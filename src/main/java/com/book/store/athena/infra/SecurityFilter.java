@@ -1,6 +1,5 @@
 package com.book.store.athena.infra;
 
-import com.book.store.athena.exceptions.ForbiddenRequestException;
 import com.book.store.athena.model.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -63,5 +62,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
 
     }
+
 
 }

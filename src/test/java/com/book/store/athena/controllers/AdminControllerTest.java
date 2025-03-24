@@ -1,5 +1,6 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.infra.TokenAuthService;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.services.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,9 @@ class AdminControllerTest {
 
     @MockitoBean
     private AdminService adminService;
+
+    @MockitoBean
+    private TokenAuthService tokenAuthService;
 
     @Test
     void registerAdmin_Test () throws Exception {

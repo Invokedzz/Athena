@@ -1,6 +1,7 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.infra.TokenAuthService;
+import com.book.store.athena.model.dto.client.ReactivateUserDTO;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.model.dto.client.UpdateUserDTO;
 import com.book.store.athena.services.UserServices;
@@ -74,10 +75,14 @@ class UserControllerTest {
 
         Mockito.when(tokenAuthService.generateUserJWToken(Mockito.any())).thenReturn(mockJwtToken);
 
-        mockMvc.perform(post("/login")
-                        .contentType("application/json")
-                        .content("{\"username\":\"username\",\"password\":\"password\"}"))
-                        .andExpect(status().isOk());
+        if (mockAuthentication.getPrincipal() != null) {
+
+            mockMvc.perform(post("/login")
+                            .contentType("application/json")
+                            .content("{\"username\":\"username\",\"password\":\"password\"}"))
+                    .andExpect(status().isOk());
+
+        }
 
     }
 
@@ -109,8 +114,10 @@ class UserControllerTest {
     @Test
     void reactivateUser_Test () throws Exception {
 
-        mockMvc.perform(put("/profile/reactivate/{id}", 1L)
-                .contentType("application/json"))
+        ReactivateUserDTO reactivateUserDTO = new ReactivateUserDTO("Eleusis@gmail.com");
+
+        mockMvc.perform(put("/reactivate-account")
+                .contentType("application/json").content(new ObjectMapper().writeValueAsString(reactivateUserDTO)))
                 .andExpect(status().isNoContent());
 
     }

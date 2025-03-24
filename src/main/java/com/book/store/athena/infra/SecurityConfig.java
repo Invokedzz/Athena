@@ -19,9 +19,13 @@ public class SecurityConfig {
 
     private final SecurityFilter filterChain;
 
-    public SecurityConfig(SecurityFilter filterChain) {
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    public SecurityConfig(SecurityFilter filterChain, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
 
         this.filterChain = filterChain;
+
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
 
     }
 
@@ -30,6 +34,7 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(e -> e
 
                         .requestMatchers("/profile/disable/{id}", "/update-profile/{id}",
@@ -44,6 +49,8 @@ public class SecurityConfig {
                         "/books/reactivate/{id}", "/favorites/collection",
                                 "/all-users", "/all-administrators", "/register-as-administrator")
                         .hasRole("ADMIN").anyRequest().authenticated()
+
+
                 )
 
                 .addFilterBefore(filterChain, UsernamePasswordAuthenticationFilter.class)
