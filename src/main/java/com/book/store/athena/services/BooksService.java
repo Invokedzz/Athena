@@ -19,14 +19,20 @@ public class BooksService {
 
     private final BooksRepository booksRepository;
 
-    public BooksService (BooksRepository booksRepository) {
+    private final ProfanityContentService profanityContentService;
+
+    public BooksService (BooksRepository booksRepository, ProfanityContentService profanityContentService) {
 
         this.booksRepository = booksRepository;
+
+        this.profanityContentService = profanityContentService;
 
     }
 
     @Transactional
     public void create(CreateBooksDTO createBooksDto) {
+
+        profanityContentService.checkProfanityLevel(createBooksDto.toString());
 
         booksRepository.save(new Books(createBooksDto));
 
