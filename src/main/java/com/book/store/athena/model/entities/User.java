@@ -1,5 +1,6 @@
 package com.book.store.athena.model.entities;
 
+import com.book.store.athena.exceptions.ForbiddenRequestException;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.model.dto.client.UpdateUserDTO;
 import jakarta.persistence.*;
