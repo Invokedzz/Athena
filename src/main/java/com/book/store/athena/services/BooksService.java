@@ -1,6 +1,7 @@
 package com.book.store.athena.services;
 
 import com.book.store.athena.api.SafeBrowsingService;
+import com.book.store.athena.exceptions.BadRequestException;
 import com.book.store.athena.exceptions.NotFoundException;
 import com.book.store.athena.model.dto.books.CreateBooksDTO;
 import com.book.store.athena.model.dto.books.FindAllBooksDTO;
@@ -9,6 +10,7 @@ import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.repository.BooksRepository;
 import jakarta.transaction.Transactional;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,6 +38,8 @@ public class BooksService {
 
     @Transactional
     public void create (CreateBooksDTO createBooksDto) {
+
+        verifyIfURLIsValid(createBooksDto.pdfPath());
 
         profanityContentService.checkProfanityLevel(createBooksDto.toString());
 
@@ -120,6 +124,18 @@ public class BooksService {
         }
 
         verifyIfBookExists(queriedBook);
+
+    }
+
+    private void verifyIfURLIsValid (String url) {
+
+        UrlValidator validator = new UrlValidator();
+
+        if (!validator.isValid(url)) {
+
+            throw new BadRequestException("Invalid URL. Try another one.");
+
+        }
 
     }
 
