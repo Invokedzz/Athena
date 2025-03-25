@@ -37,8 +37,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(e -> e
 
-                        .requestMatchers("/profile/disable/{id}", "/update-profile/{id}",
-                                "/books/create", "/books/favorite-books/{id}"
+                        .requestMatchers("/profile/disable/{id}", "/update-profile/{id}", "/books/favorite-books/{id}"
                                 , "/favorites/reactivate/{id}", "/favorites/reactivate/{id}",
                                 "/favorites/add")
                         .hasRole("USER")
@@ -47,7 +46,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/books/update/{id}", "/books/delete/{id}",
                         "/books/reactivate/{id}", "/favorites/collection",
-                                "/all-users", "/all-administrators", "/register-as-administrator")
+                                "/all-users", "/all-administrators", "/register-as-administrator", "/books/create")
                         .hasRole("ADMIN").anyRequest().authenticated()
 
 
