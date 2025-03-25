@@ -1,7 +1,9 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.api.OpenLibraryService;
 import com.book.store.athena.model.dto.books.FindAllBooksDTO;
 import com.book.store.athena.model.dto.books.CreateBooksDTO;
+import com.book.store.athena.model.dto.books.SearchBooksDTO;
 import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.services.BooksService;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -18,9 +21,13 @@ public class BooksController {
 
     private final BooksService booksService;
 
-    public BooksController(BooksService booksService) {
+    private final OpenLibraryService openLibraryService;
+
+    public BooksController(BooksService booksService, OpenLibraryService openLibraryService) {
 
         this.booksService = booksService;
+
+        this.openLibraryService = openLibraryService;
 
     }
 
@@ -39,6 +46,15 @@ public class BooksController {
         var bookList = booksService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
+
+    }
+
+    @GetMapping("/search")
+    protected ResponseEntity <List<Object>> searchBooks (@RequestBody @Valid SearchBooksDTO books) {
+
+        List <Object> result = openLibraryService.search(books);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
 
