@@ -1,5 +1,6 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.api.google.SafeBrowsingService;
 import com.book.store.athena.exceptions.NotFoundException;
 import com.book.store.athena.model.dto.books.CreateBooksDTO;
 import com.book.store.athena.model.dto.books.FindAllBooksDTO;
@@ -21,18 +22,24 @@ public class BooksService {
 
     private final ProfanityContentService profanityContentService;
 
-    public BooksService (BooksRepository booksRepository, ProfanityContentService profanityContentService) {
+    private final SafeBrowsingService safeBrowsingService;
+
+    public BooksService (BooksRepository booksRepository, ProfanityContentService profanityContentService, SafeBrowsingService safeBrowsingService) {
 
         this.booksRepository = booksRepository;
 
         this.profanityContentService = profanityContentService;
 
+        this.safeBrowsingService = safeBrowsingService;
+
     }
 
     @Transactional
-    public void create(CreateBooksDTO createBooksDto) {
+    public void create (CreateBooksDTO createBooksDto) {
 
         profanityContentService.checkProfanityLevel(createBooksDto.toString());
+
+        safeBrowsingService.verifyIfUrlIsUnsafe(createBooksDto.pdfPath());
 
         booksRepository.save(new Books(createBooksDto));
 

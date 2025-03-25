@@ -9,7 +9,7 @@ public class ProfanityContentService {
 
     private final ChatClient chatClient;
 
-    public ProfanityContentService(ChatClient.Builder chatClient) {
+    public ProfanityContentService (ChatClient.Builder chatClient) {
 
         this.chatClient = chatClient.build();
 

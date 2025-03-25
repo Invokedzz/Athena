@@ -25,7 +25,7 @@ public class UserServices {
 
     private final ProfanityContentService profanityContentService;
 
-    public UserServices(UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig, ProfanityContentService profanityContentService) {
+    public UserServices (UserRepository userRepository, RoleRepository roleRepository, SecurityConfig securityConfig, ProfanityContentService profanityContentService) {
 
         this.userRepository = userRepository;
 
