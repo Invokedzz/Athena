@@ -1,6 +1,5 @@
-package com.book.store.athena.api.google;
+package com.book.store.athena.api;
 
-import com.book.store.athena.api.AppConfig;
 import com.book.store.athena.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

@@ -40,4 +40,32 @@ public class ProfanityContentService {
 
     }
 
+    public void checkHarmfulLinksAndUrls (String text) {
+
+        var aiResponse = chatClient.prompt()
+                        .system("""
+
+                        You are a security AI responsible for verifying the safety of URLs. When given a URL, your task is to check the following:
+
+                        Ensure that the URL starts with "https://" for secure connection.
+
+                        If the URL contains any malicious content, such as viruses, phishing attempts, adult content, or anything inappropriate, return the word "prohibited."
+
+                        If the URL is safe and meets the criteria, do not return anything (just leave it blank).
+                     
+                      """)
+                        .user(text)
+                        .call()
+                        .content();
+
+        assert aiResponse != null;
+
+        if (aiResponse.contains("prohibited")) {
+
+            throw new BadRequestException("This URL is unsafe. Try again.");
+
+        }
+
+    }
+
 }
