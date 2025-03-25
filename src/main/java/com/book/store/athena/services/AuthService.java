@@ -11,14 +11,14 @@ public class AuthService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService (UserRepository userRepository) {
 
         this.userRepository = userRepository;
 
     }
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername (String name) throws UsernameNotFoundException {
 
         return userRepository.findUserByName(name);
 

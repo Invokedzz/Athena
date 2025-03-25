@@ -1,5 +1,7 @@
 package com.book.store.athena.services;
 
+import com.book.store.athena.model.dto.client.FindAllActiveUsersDTO;
+import com.book.store.athena.model.dto.client.FindUserByIdDTO;
 import com.book.store.athena.model.dto.client.RegisterUserDTO;
 import com.book.store.athena.model.entities.User;
 import com.book.store.athena.model.repository.UserRepository;
@@ -12,6 +14,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Optional;
+import java.util.Set;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -48,6 +52,58 @@ class AdminServiceTest {
                         .isNotNull();
 
         Mockito.verify(adminService, Mockito.times(1)).create(Mockito.any(RegisterUserDTO.class));
+
+    }
+
+    @Test
+    void findAdminById_ThenReturnIt () {
+
+        FindUserByIdDTO user = new FindUserByIdDTO(1L, "Bowser",
+                "Bowser@gmail.com", LocalDate.parse("1999-10-02"));
+
+        Mockito.when(adminService.findAdminById(Mockito.anyLong())).thenReturn(Optional.of(user));
+
+        adminService.findAdminById(1L);
+
+        Assertions.assertThat(user.username())
+                  .isEqualTo("Bowser")
+                  .isNotNull();
+
+        Assertions.assertThat(user.email())
+                  .isEqualTo("Bowser@gmail.com")
+                  .isNotNull();
+
+        Assertions.assertThat(user.birthDate())
+                  .isEqualTo(LocalDate.parse("1999-10-02"))
+                  .hasDayOfMonth(2);
+
+        Mockito.verify(adminService, Mockito.times(1)).findAdminById(Mockito.anyLong());
+
+    }
+
+    @Test
+    void findAllAdmins_ThenReturnThem () {
+
+        FindAllActiveUsersDTO activeUsers = new FindAllActiveUsersDTO(1L, "Waluigi",
+                "Waluigi@gmail.com", LocalDate.parse("1999-10-02"));
+
+        Mockito.when(adminService.findAll()).thenReturn(Set.of(activeUsers));
+
+        adminService.findAll();
+
+        Assertions.assertThat(activeUsers.email())
+                .isEqualTo("Waluigi@gmail.com")
+                .isNotNull();
+
+        Assertions.assertThat(activeUsers.username())
+                .isEqualTo("Waluigi")
+                .isNotNull();
+
+        Assertions.assertThat(activeUsers.birthDate())
+                .isEqualTo(LocalDate.parse("1999-10-02"))
+                .hasDayOfMonth(2);
+
+        Mockito.verify(adminService, Mockito.times(1)).findAll();
 
     }
 

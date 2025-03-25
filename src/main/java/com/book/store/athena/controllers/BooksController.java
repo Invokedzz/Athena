@@ -5,7 +5,6 @@ import com.book.store.athena.model.dto.books.CreateBooksDTO;
 import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.model.dto.client.FindUserBooksByIdDTO;
 import com.book.store.athena.services.BooksService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
