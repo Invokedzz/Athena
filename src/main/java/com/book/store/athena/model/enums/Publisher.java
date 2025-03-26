@@ -8,9 +8,19 @@ public enum Publisher {
 
     NEW_POP,
 
+    PENGUIN_RANDOM_HOUSE,
+
+    HACHETTE,
+
+    HARPER_COLLINS,
+
+    MACMILLIAN,
+
     VENETA,
 
     INTRINSECA,
+
+    SIMON_SCHUSTER,
 
     ARQUEIRO,
 

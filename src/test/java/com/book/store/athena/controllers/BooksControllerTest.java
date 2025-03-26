@@ -1,5 +1,6 @@
 package com.book.store.athena.controllers;
 
+import com.book.store.athena.api.OpenLibraryService;
 import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.services.BooksService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,9 @@ class BooksControllerTest {
     @MockitoBean
     private BooksService booksService;
 
+    @MockitoBean
+    private OpenLibraryService openLibraryService;
+
     @Test
     void createBook_Test () throws Exception {
 
@@ -38,7 +42,7 @@ class BooksControllerTest {
                                        \s
                                         "name": "The Book of Bill",
                                         "author": "Alex Hirsch ",
-                                        "genre":"FANTASY",
+                                        "genre":["FANTASY"],
                                         "release-date":"2024-07-23",
                                         "publisher":"JBC",
                                         "description": "The demon that terrorized Gravity Falls is back from the great beyond to finally tell his side of the story in The Book of Bill, written by none other than Bill Cipher himself. Inside, Bill sheds light on his bizarre origins, his sinister effects on human history, the Pines family's most embarrassing secrets, and the key to overthrowing the world (laid out in a handy step-by-step guide). This chaotic and beautifully illustrated tome contains baffling riddles, uncrackable ciphers, lost Journal 3 pages, ways to cheat death, the meaning of life, and a whole chapter on Silly Straws. But most importantly, The Book of Bill is deeply, deeply cursed.",

@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Entity
@@ -30,7 +31,7 @@ public class Books {
     private String author;
 
     @Enumerated(EnumType.STRING)
-    private Genre genre;
+    private Set <Genre> genre;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
