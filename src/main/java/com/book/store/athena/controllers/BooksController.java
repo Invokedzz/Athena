@@ -52,7 +52,7 @@ public class BooksController {
     @GetMapping("/search")
     protected ResponseEntity <List<Object>> searchBooks (@RequestBody @Valid SearchBooksDTO books) {
 
-        List <Object> result = openLibraryService.search(books);
+        var result = openLibraryService.search(books);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
