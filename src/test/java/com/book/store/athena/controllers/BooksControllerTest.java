@@ -1,11 +1,13 @@
 package com.book.store.athena.controllers;
 
 import com.book.store.athena.api.OpenLibraryService;
+import com.book.store.athena.model.dto.books.SearchBooksDTO;
 import com.book.store.athena.model.dto.books.UpdateBooksDTO;
 import com.book.store.athena.services.BooksService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,6 +64,22 @@ class BooksControllerTest {
                 .contentType("application/json")
                 .content(new ObjectMapper().writeValueAsString(findAll)))
                 .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void searchBooks_Test () throws Exception {
+
+        SearchBooksDTO searchBooksDTO = new SearchBooksDTO("Tolkien");
+
+        Mockito.when(openLibraryService.search(searchBooksDTO)).thenReturn(Mockito.anyList());
+
+        mockMvc.perform(get("/books/search")
+                        .content(new ObjectMapper().writeValueAsString(searchBooksDTO))
+                        .contentType("application/json"))
+                        .andExpect(status().isOk());
+
+        Mockito.verify(openLibraryService, Mockito.times(1)).search(searchBooksDTO);
 
     }
 
