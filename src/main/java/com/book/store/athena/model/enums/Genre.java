@@ -1,12 +1,15 @@
 package com.book.store.athena.model.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum Genre {
 
     FANTASY,
 
     DARK_FANTASY,
 
-    ADVENTURE,
+    ACTION_ADVENTURE,
 
     ROMANCE,
 
@@ -18,6 +21,18 @@ public enum Genre {
 
     COMEDY,
 
-    TERROR,
+    MYSTERY,
+
+    THRILLER_SUSPENSE,
+
+    GRAPHIC_NOVEL,
+
+    HUMOR,
+
+    SOCIAL_SCIENCE,
+
+    TECHNOLOGY_SCIENCE,
+
+    HORROR
 
 }

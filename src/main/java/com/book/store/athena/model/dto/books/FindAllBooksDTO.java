@@ -3,6 +3,10 @@ package com.book.store.athena.model.dto.books;
 import com.book.store.athena.model.entities.Books;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+import java.util.Set;
 
 public record FindAllBooksDTO(
 
@@ -10,7 +14,8 @@ public record FindAllBooksDTO(
 
         String author,
 
-        Genre genre,
+        @Enumerated(EnumType.STRING)
+        Set <Genre> genre,
 
         Publisher publisher,
 

@@ -3,12 +3,14 @@ package com.book.store.athena.model.dto.books;
 import com.book.store.athena.model.enums.Genre;
 import com.book.store.athena.model.enums.Publisher;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public record CreateBooksDTO(
 
@@ -20,8 +22,8 @@ public record CreateBooksDTO(
         @Length(min = 4, max = 50, message = "author input length must be between 4 to 50 characters")
         String author,
 
-        @Enumerated
-        Genre genre,
+        @Enumerated(EnumType.STRING)
+        Set <Genre> genre,
 
         @Past
         @JsonProperty("release-date")
